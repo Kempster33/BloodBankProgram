@@ -82,6 +82,12 @@ bool Recipient_Login();
 void recipient_screen();
 void checkVal(Registration_Recipient recipient);
 
+bool Donor_Login();
+void donor_screen();
+inline void procedure_to_donate();
+inline void donation_benefits();
+
+streamsize current_donor_position = 0;
 int main()
 {
 	main_menu();
@@ -120,7 +126,17 @@ void main_menu()
 
 		if (choice == 1)
 		{
-			//login donor
+			bool account_found = false;
+			int attempts = 0;
+			cout << "\nLogin" << endl << endl;
+			while (account_found == false && attempts < 3)
+			{
+				account_found = Donor_Login();
+				attempts++;
+			}
+			if (account_found) {
+				donor_screen();
+			}
 			cout << endl;
 		}
 		else if (choice == 2)
@@ -711,7 +727,7 @@ void recipient_screen()
 		}
 		case 2:
 		{
-		// search for blood group and location
+			// search for blood group and location
 			cout << "Search (Blood Group & Location)" << endl;
 			break;
 		}
@@ -752,4 +768,153 @@ void checkVal(Registration_Recipient recipient)
 	{
 		cout << "Validation : False" << endl;
 	}
+}
+void donor_screen() {
+	int donor_menu_input;
+
+	while (1) {
+		cout << "\nDonor Menu : \n";
+		cout << "\n1. Procedure to donate blood";
+		cout << "\n2. Create a Booking";
+		cout << "\n3. Benefits of blood donation";
+		cout << "\n4. Manage donor information";
+		cout << "\n5. Back\n";
+		cout << "Please enter option : ";
+		cin >> donor_menu_input;
+		switch (donor_menu_input)
+		{
+		case 1:
+			procedure_to_donate();
+			break;
+		case 2:
+			//Booking function.
+			break;
+		case 3:
+			//Benefits of blood donation 
+			donation_benefits();
+			break;
+		case 4:
+			//Update the donor information.
+			//update_donor_information();
+			//displayDonorFile();
+			//Also edit booking informations. / switch case menu for both options.
+			break;
+		case 5:
+			//create_booking();
+			return;
+		default:
+			cout << "\nPlease enter a valid option..\n";
+			break;
+		}
+	}
+}
+bool Donor_Login()
+{
+
+	fstream DonorFile;
+	Registration_Donor donor;
+	char username[20];
+	char password[20];
+	bool found_flag = false;
+
+	DonorFile.open("donor.dat", ios::in | ios::binary);
+
+	if (!DonorFile)
+	{
+		//currently printing 3 times as function called 3, just use argument value as fix lol
+		cout << "Donor File not found! ";
+	}
+	else {
+
+		cout << "\nLogin" << endl << endl;
+		cout << "Username : ";
+		cin.getline(username, 20);
+		cout << "Password : ";
+		cin.getline(password, 20);
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+
+		while (!DonorFile.eof())
+		{
+			if (strcmp(username, donor.Username) == 0 && strcmp(password, donor.Password) == 0) {
+				cout << "Welcome back " << donor.Username << "!\n";
+				found_flag = true;
+				current_donor_position = DonorFile.tellg() / sizeof(donor) - 1;
+			}
+			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		}
+		//if the account is not found 
+		if (found_flag == false) {
+			cout << "Account not found.. Exiting\n";
+		}
+	}
+
+
+	DonorFile.close();
+	return found_flag;
+}
+
+inline void procedure_to_donate() {
+	cout << "\nProcedure to donate blood:\n\n";
+	cout << "\t1. Check with your G.P to make sure you are eligible as a donor\n";
+	cout << "\t2. Register as a donor with this system.\n";
+	cout << "\t3. Log into the donor menu.\n";
+	cout << "\t4. Select the booking option 2 in the donor menu.\n";
+	cout << "\t5. Enter the booking details. Hospital name, date etc\n";
+	cout << "\t6. Select an available timeslot at the hospital.\n";
+	cout << "\t7. The system will tell you if this is available\n";
+	cout << "\t8. Come into the selected hospital and bring your ID, something to pass time and a smile!!\n";
+	cout << "\n\tRemember you're saving a life today!!\n";
+
+	cout << "\n\tTips:\n";
+	cout << "\t\tEat within a few hours before donation and almost immediately afterwards.\n";
+	cout << "\t\tKeep yourself hydrated to avoid light headedness.\n";
+	cout << "\t\tMake sure to rest adequately.\n";
+	cout << "\t\tMake sure you are in good health. E.g: Have recovered from any colds / flu's.\n";
+
+	cout << "\n\tOnce you have arrived:\n\n";
+	cout << "\t1. Check in at the blood donation office.\n";
+	cout << "\t2. Read two mandatory leaflets and complete a Donor Health Questionnaire.\n";
+	cout << "\t3. Once completed donors sign a declaration that to the best of their knowledge the health\n";
+	cout << "\tinformation given is correct and give consent to the testing for blood groups\n";
+	cout << "\tand evidence of some infections in the blood that they donate.\n";
+	cout << "\t4. Once you have completed your questionnaire, you will have a confidential interview with a NZBS nurse\n";
+	cout << "\tor donor technician\n";
+	cout << "\t5. They will also check your haemoglobin level using a finger prick test.\n\n";
+	cout << "\t6. Once you've completed your interview successfully, you will be taken to one of our donation\n";
+	cout << "\tchairs and seated comfortably.\n";
+	cout << "\t7. Your arm will be cleaned at the venepuncture site (on the inside of the elbow)\n";
+	cout << "\t8. A sterile , single-use needle will be inserted. There may be a moment of discomfort as \n";
+	cout << "\tthe needle goes in - sorry, this is the only way to get the blood out! \n";
+	cout << "\tThe time you spend in the donation chair will differ depending on the type of donation you are giving. \n\n";
+
+	cout << "\tA blood donation can take up to 60 minutes (includes registration, donation and recovery).\n";
+	cout << "\tThe blood is collected in a sterile bag, and time on the bed can take about 5 to 10 minutes..\n";
+	cout << "\t9. A unit of blood (around 470 ml) will be collected. The needle is then removed and a bandage is applied.\n\n";
+	cout << "\tA plasma donation can take up to 90 minutes (includes registration, donation and recovery). The process of\n";
+	cout << "\tdonating plasma is longer because blood is taken and separated into plasma and red blood cells by a special\n";
+	cout << "\tapheresis machine.  The red blood cells are returned to your body and the plasma is collected in a \n";
+	cout << "\tsterile bag. The time on the bed can take about 45 to 60 minutes. For your safety, a new needle and \n";
+	cout << "\tcollection bag is used for each blood donation.Needlesand bags are never reused. \n\n";
+
+	cout << "\t10. After donating blood, you will be asked to rest on the chair for around 5 to 10 minutes. When you're \n";
+	cout << "\tready, you will be invited to have refreshments in the recovery area. We like to keep an eye on\n";
+	cout << "\tyou for another 10-15 minutes to make sure that you feel OK before leaving.\n";
+}
+inline void donation_benefits() {
+	cout << "\nBenefits of donating Blood: \n";
+	cout << "\n\tThe gift of blood can only be given from one person to another, and there is no substitute. \n";
+	cout << "\tRegular weekly donations ensure blood and plasma are available for those in need.\n";
+	cout << "\tHowever, the need for blood and plasma is constant, so we're looking for more lifesavers.\n ";
+	cout << "\tBy putting aside a small part of your day you can make a life-changing difference, \n ";
+	cout << "\tyou can become a lifesaver too!\n\n";
+	cout << "Reasons to donate: \n";
+	cout << "\n\t1. One blood donation can save up to 3 lives.\n";
+	cout << "\t2. Make a difference in your community by helping others.\n";
+	cout << "\t3. Pay it forward. One day whanau, friends or even you may need it.\n";
+	cout << "\t4. Join an extraordinary group of lifesavers.\n";
+	cout << "\t5. Donating regularly ensures that a safe and plentiful supply of blood is available \n";
+	cout << "\twhenever and wherever it is needed.\n";
+	cout << "\t6.Less than 3% of people in New Zealand are blood donors.\n";
+	cout << "\t7.Whether you choose to give blood, plasma or platelets, your donation will save and \n";
+	cout << "\timprove the lives of people across New Zealand.\n";
 }
