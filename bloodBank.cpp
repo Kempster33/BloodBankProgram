@@ -72,9 +72,12 @@ struct Admin
 
 void main_menu();
 
+void Register_Recipient();
+bool checkUsername(string fileName, char username[]);
+bool getValidation(char validation);
+
 int main()
 {
-
 	main_menu();
 
 	return 0;
@@ -125,7 +128,9 @@ void main_menu()
 		}
 		else if (choice == 4)
 		{
-			//Register recipient
+			Register_Recipient();
+			cout << endl << endl;
+			
 		}
 		else if (choice == 5)
 		{
@@ -141,5 +146,254 @@ void main_menu()
 		{
 			cout << "Wrong Input" << endl;
 		}
+	}
+}
+
+void Register_Recipient()
+{
+	fstream RecipientFile;
+	Registration_Recipient recipient;
+	RecipientFile.open("recipient.dat", ios::out | ios::app | ios::binary);
+	if (!RecipientFile)
+	{
+		cout << "File not found!";
+	}
+	char A_pos[] = { "A+" };
+	char A_neg[] = { "A-" };
+	char B_pos[] = { "B+" };
+	char B_neg[] = { "B-" };
+	char O_pos[] = { "O+" };
+	char O_neg[] = { "O-" };
+	char AB_pos[] = { "AB+" };
+	char AB_neg[] = { "AB-" };
+	char none1[] = { "None" };
+	char none2[] = { "none" };
+	char temp;
+	cout << " Rigster Recipient" << endl;
+	cout << "-------------------\n" << endl;
+	cout << "First Name : ";
+	cin >> recipient.FirstName;
+	cout << "Middle Name : ";
+	cin >> recipient.MiddleName;
+	cout << "Last Name : ";
+	cin >> recipient.LastName;
+	cout << "Date Of Birth : ";
+	cin >> recipient.DOB;
+	cin.ignore();
+	cout << "Nationality : ";
+	cin.getline(recipient.Nationalty, Size);
+	cout << "City : ";
+	cin.getline(recipient.City, Size);
+	cout << "Hospital : ";
+	cin.getline(recipient.Hospital_Name, Size);
+	cout << "Ethnicity : ";
+	cin.getline(recipient.Ethnicity, Size);
+	cout << "Gender (M/F/X - Other): ";
+	cin >> temp;
+	while (temp != 'M' && temp != 'F' && temp != 'X' && temp != 'm' && temp != 'f' && temp != 'x')
+	{
+		//system("CLS"); // clear screen
+		cout << "\nPlease try again" << endl;
+		cout << "Gender (M/F/X - Other): ";
+		cin >> temp;
+	}
+	recipient.Gender = temp;
+	cin.ignore();
+	cout << "Any Health Conditions : ";
+	cin.getline(recipient.Conditions, 255);
+	cout << "Blood Group (If not sure type None) : ";
+	cin >> recipient.BloodGroup;
+	while ((strcmp(A_pos, recipient.BloodGroup) != 0) && (strcmp(A_neg, recipient.BloodGroup) != 0) &&
+		(strcmp(B_pos, recipient.BloodGroup) != 0) && (strcmp(B_neg, recipient.BloodGroup) != 0) &&
+		(strcmp(O_pos, recipient.BloodGroup) != 0) && (strcmp(O_neg, recipient.BloodGroup) != 0) &&
+		(strcmp(AB_pos, recipient.BloodGroup) != 0) && (strcmp(AB_neg, recipient.BloodGroup) != 0) &&
+		(strcmp(none1, recipient.BloodGroup) != 0) && (strcmp(none2, recipient.BloodGroup) != 0))
+	{
+		//system("CLS"); // clear screen
+		cout << "\nPlease enter the correct Blood group (or if not sure type None)" << endl;
+		cout << "[A+] [A-]" << endl;
+		cout << "[B+] [B-]" << endl;
+		cout << "[O+] [O-]" << endl;
+		cout << "[AB+] [AB-]" << endl << endl;
+		cout << "Blood Group : ";
+		cin >> recipient.BloodGroup;
+	}
+	cin.ignore();
+	cout << "Contact Number : ";
+	cin.getline(recipient.ContactNumber, Size);
+	cout << "Email : ";
+	cin.getline(recipient.Email, Size);
+	cout << "Address : ";
+	cin.getline(recipient.Address, Size);
+	//system("CLS");
+	bool tempBoolUsername;
+	bool check = false;
+	int i;
+	char tempusername[20];
+	cout << "\n20 Characters Maximum" << endl;
+	cout << "Username : ";
+	cin >> tempusername;
+	while (check != true)
+	{
+		for (i = 0; tempusername[i]; i++)
+		{
+		}
+		if (i > 20)
+		{
+			//system("CLS"); // clear screen
+			cout << "Only 20 Maximum characters" << endl;
+			cout << "Username : ";
+			cin >> tempusername;
+		}
+		else if (i < 20)
+		{
+			check = true;
+			break;
+		}
+	}
+	tempBoolUsername = checkUsername("recipient.dat", tempusername);
+	while (tempBoolUsername == true)
+	{
+		bool check = false;
+		int i;
+		cout << "\nUsername Already exists! \n" << endl;
+		cout << "\n20 Characters Maximum" << endl;
+		cout << "Username : ";
+		cin >> tempusername;
+		while (check != false)
+		{
+			for (i = 0; tempusername[i]; i++)
+			{
+			}
+			if (i > 20)
+			{
+				//system("CLS"); // clear screen
+				cout << "Only 20 Maximum characters" << endl;
+				cout << "Username : ";
+				cin >> tempusername;
+			}
+			else if (i < 20)
+			{
+				check = true;
+				break;
+			}
+		}
+		tempBoolUsername = checkUsername("recipient.dat", tempusername);
+	}
+	check = false;
+	for (int i = 0; i < 20; i++)
+	{
+		recipient.Username[i] = tempusername[i];
+	}
+	cout << "\n20 Characters Maximum" << endl;
+	cout << "Password : ";
+	cin >> recipient.Password;
+	while (check != true)
+	{
+		for (i = 0; recipient.Password[i]; i++)
+		{
+		}
+		if (i > 20)
+		{
+			//system("CLS"); // clear screen
+			cout << "Only 20 Maximum characters" << endl;
+			cout << "Password : ";
+			cin >> recipient.Password;
+		}
+		else if (i < 20)
+		{
+			check = true;
+			break;
+		}
+	}
+	char valcheck;
+	bool tempBool;
+	cout << "\nAre you able to recieve Blood? (y/n) :";
+	cin >> valcheck;
+	while (valcheck != 'y' && valcheck != 'n')
+	{
+		cout << "\nOnly (y/n) : ";
+		cin >> valcheck;
+	}
+	tempBool = getValidation(valcheck);
+	recipient.Validation = tempBool;
+	cout << endl;
+	cin.ignore();
+	RecipientFile.write(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+	RecipientFile.close();
+}
+
+bool getValidation(char validation)
+{
+	//fstream RecipientFile;
+	Registration_Recipient recipient;
+	if (validation == 'y')
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool checkUsername(string fileName, char username[])
+{
+	fstream RecipientFile;
+	fstream DonorFile;
+	Registration_Recipient recipient;
+	Registration_Donor donor;
+	if (fileName == "recipient.dat")
+	{
+		RecipientFile.open("recipient.dat", ios::in | ios::binary);
+		if (!RecipientFile)
+		{
+			return false;
+		}
+		else
+		{
+			RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+			while (!RecipientFile.eof())
+			{
+				if (strcmp(username, recipient.Username) == 0)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+				RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+			}
+		}
+		RecipientFile.close();
+	}
+	else if (fileName == "donor.dat")
+	{
+		DonorFile.open("donor.dat", ios::in | ios::binary);
+		if (!DonorFile)
+		{
+		}
+		else
+		{
+			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+			while (!DonorFile.eof())
+			{
+				if (strcmp(username, donor.Username) == 0)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+				DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+			}
+		}
+		DonorFile.close();
+	}
+	else
+	{
+		return false;
 	}
 }
