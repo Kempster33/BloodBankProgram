@@ -77,6 +77,10 @@ void Register_Donor();
 bool checkUsername(string fileName, char username[]);
 bool getValidation(char validation);
 void displayDonorFile();
+void displayRecipientFile();
+bool Recipient_Login();
+void recipient_screen();
+void checkVal(Registration_Recipient recipient);
 
 int main()
 {
@@ -121,7 +125,17 @@ void main_menu()
 		}
 		else if (choice == 2)
 		{
-			//login recipient
+			bool account_found2 = false;
+			int attempts2 = 0;
+			cout << "\nLogin" << endl << endl;
+			while (account_found2 == false && attempts2 < 3)
+			{
+				account_found2 = Recipient_Login();
+				attempts2++;
+			}
+			if (account_found2) {
+				recipient_screen();
+			}
 			cout << endl;
 		}
 		else if (choice == 3)
@@ -129,13 +143,13 @@ void main_menu()
 			//register donor.
 			Register_Donor();
 			cout << endl << endl;
-			displayDonorFile();
+			displayDonorFile(); // remove later
 		}
 		else if (choice == 4)
 		{
 			Register_Recipient();
 			cout << endl << endl;
-
+			displayRecipientFile(); // remove later
 		}
 		else if (choice == 5)
 		{
@@ -603,4 +617,139 @@ void displayDonorFile()
 	}
 
 	DonorFile.close();
+}
+void displayRecipientFile()
+{
+	fstream RecipientFile;
+	Registration_Recipient recipient;
+	bool tempVal;
+	RecipientFile.open("recipient.dat", ios::in | ios::binary);
+	if (!RecipientFile)
+	{
+		cout << "File not found";
+	}
+	RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+	while (!RecipientFile.eof())
+	{
+		cout << "Name : " << recipient.FirstName << " " << recipient.MiddleName << " " << recipient.LastName << endl;
+		cout << "Date Of Birth : " << recipient.DOB << endl;
+		cout << "Nationalty : " << recipient.Nationalty << endl;
+		cout << "Ethnicity : " << recipient.Ethnicity << endl;
+		cout << "Gender : " << recipient.Gender << endl;
+		cout << "City : " << recipient.City << endl;
+		cout << "Contact Number : " << recipient.ContactNumber << endl;
+		cout << "Email : " << recipient.Email << endl;
+		cout << "Address : " << recipient.Address << endl;
+		cout << "Conditions : " << recipient.Conditions << endl;
+		cout << "Blood Group : " << recipient.BloodGroup << endl;
+		cout << "Hospital : " << recipient.Hospital_Name << endl;
+		checkVal(recipient);
+		cout << endl;
+		//cout << "Username : " << recipient.Username << endl;
+		//cout << "Password : " << recipient.Password << endl;
+		RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+	}
+	RecipientFile.close();
+}
+
+bool Recipient_Login()
+{
+	fstream RecipientFile;
+	Registration_Recipient recipient;
+	char username[20];
+	char password[20];
+	bool found_flag = false;
+	RecipientFile.open("recipient.dat", ios::in | ios::binary);
+	if (!RecipientFile)
+	{
+		cout << "File not found";
+	}
+	else {
+		cout << "Username : ";
+		cin.getline(username, 20);
+		cout << "Password : ";
+		cin.getline(password, 20);
+		RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+		while (!RecipientFile.eof())
+		{
+			if (strcmp(username, recipient.Username) == 0 && strcmp(password, recipient.Password) == 0) {
+				cout << "\nWelcome back " << recipient.Username << "!\n";
+				found_flag = true;
+			}
+			RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
+		}
+		//if the account is not found 
+		if (found_flag == false) {
+			cout << "\nAccount not found.. Exiting\n";
+		}
+	}
+	RecipientFile.close();
+	return found_flag;
+}
+
+void recipient_screen()
+{
+	bool flag = true;
+	while (flag != false)
+	{
+		int choice;
+		cout << "Recipient Menu" << endl;
+		cout << "---------------" << endl << endl;
+		cout << "1. Search Donors Info by Blood group" << endl;
+		cout << "2. Search Donors Info by Blood group & Location" << endl;
+		cout << "3. Gather Donors contact details (By given Full Name)" << endl;
+		cout << "4. Your Blood details" << endl;
+		cout << "5. Back" << endl;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+		{
+			// search for blood group
+			cout << "Search (Blood Group)" << endl;
+			break;
+		}
+		case 2:
+		{
+		// search for blood group and location
+			cout << "Search (Blood Group & Location)" << endl;
+			break;
+		}
+		case 3:
+		{
+			// Get Donors Details - (By giving Full name) - (Not Middle name)
+			// donor contact details for recipient
+			cout << "Donor contacts" << endl;
+			break;
+		}
+		case 4:
+		{
+			// (Your Details)
+			cout << endl;
+			displayRecipientFile();
+			cout << endl;
+			break;
+		}
+		case 5:
+		{
+			// Back - back main menu
+			return;
+		}
+		default:
+		{
+		}
+		}
+	}
+}
+
+void checkVal(Registration_Recipient recipient)
+{
+	if (recipient.Validation == 1)
+	{
+		cout << "Validation : True" << endl;
+	}
+	else
+	{
+		cout << "Validation : False" << endl;
+	}
 }
