@@ -73,8 +73,10 @@ struct Admin
 void main_menu();
 
 void Register_Recipient();
+void Register_Donor();
 bool checkUsername(string fileName, char username[]);
 bool getValidation(char validation);
+void displayDonorFile();
 
 int main()
 {
@@ -125,12 +127,15 @@ void main_menu()
 		else if (choice == 3)
 		{
 			//register donor.
+			Register_Donor();
+			cout << endl << endl;
+			displayDonorFile();
 		}
 		else if (choice == 4)
 		{
 			Register_Recipient();
 			cout << endl << endl;
-			
+
 		}
 		else if (choice == 5)
 		{
@@ -396,4 +401,206 @@ bool checkUsername(string fileName, char username[])
 	{
 		return false;
 	}
+}
+void Register_Donor()
+{
+	fstream DonorFile;
+	Registration_Donor donor;
+	DonorFile.open("donor.dat", ios::out | ios::app | ios::binary);
+	if (!DonorFile)
+	{
+		cout << "File not found!";
+	}
+	char A_pos[] = { "A+" };
+	char A_neg[] = { "A-" };
+	char B_pos[] = { "B+" };
+	char B_neg[] = { "B-" };
+	char O_pos[] = { "O+" };
+	char O_neg[] = { "O-" };
+	char AB_pos[] = { "AB+" };
+	char AB_neg[] = { "AB-" };
+	char none1[] = { "None" };
+	char none2[] = { "none" };
+	char temp;
+	cout << " Register Donor" << endl;
+	cout << "-------------------\n" << endl;
+	cout << "First Name : ";
+	cin >> donor.FirstName;
+	cout << "Middle Name : ";
+	cin >> donor.MiddleName;
+	cout << "Last Name : ";
+	cin >> donor.LastName;
+	cout << "Date Of Birth : ";
+	cin >> donor.DOB;
+	cin.ignore();
+	cout << "Nationality : ";
+	cin.getline(donor.Nationalty, Size);
+	cout << "City : ";
+	cin.getline(donor.City, Size);
+	cout << "Hospital : ";
+	cin.getline(donor.Hospital_Name, Size);
+	cout << "Ethnicity : ";
+	cin.getline(donor.Ethnicity, Size);
+	cout << "Gender (M/F/X - Other): ";
+	cin >> temp;
+	while (temp != 'M' && temp != 'F' && temp != 'X' && temp != 'm' && temp != 'f' && temp != 'x')
+	{
+		//system("CLS"); // clear screen
+		cout << "\nPlease try again" << endl;
+		cout << "Gender (M/F/X - Other): ";
+		cin >> temp;
+	}
+	donor.Gender = temp;
+	cin.ignore();
+	cout << "Any Health Conditions : ";
+	cin.getline(donor.Conditions, 255);
+	cout << "Blood Group (If not sure type None) : ";
+	cin >> donor.BloodGroup;
+	while ((strcmp(A_pos, donor.BloodGroup) != 0) && (strcmp(A_neg, donor.BloodGroup) != 0) &&
+		(strcmp(B_pos, donor.BloodGroup) != 0) && (strcmp(B_neg, donor.BloodGroup) != 0) &&
+		(strcmp(O_pos, donor.BloodGroup) != 0) && (strcmp(O_neg, donor.BloodGroup) != 0) &&
+		(strcmp(AB_pos, donor.BloodGroup) != 0) && (strcmp(AB_neg, donor.BloodGroup) != 0) &&
+		(strcmp(none1, donor.BloodGroup) != 0) && (strcmp(none2, donor.BloodGroup) != 0))
+	{
+		//system("CLS"); // clear screen
+		cout << "\nPlease enter the correct Blood group (or if not sure type None)" << endl;
+		cout << "[A+] [A-]" << endl;
+		cout << "[B+] [B-]" << endl;
+		cout << "[O+] [O-]" << endl;
+		cout << "[AB+] [AB-]" << endl << endl;
+		cout << "Blood Group : ";
+		cin >> donor.BloodGroup;
+	}
+	//if ((strcmp(none1, donor.BloodGroup) == 0) || (strcmp(none2, donor.BloodGroup) == 0))
+	//{
+	//  randomBloodGroup(donor.BloodGroup);
+	//}
+	cin.ignore();
+	cout << "Contact Number : ";
+	cin.getline(donor.ContactNumber, Size);
+	cout << "Email : ";
+	cin.getline(donor.Email, Size);
+	cout << "Address : ";
+	cin.getline(donor.Address, Size);
+	//system("CLS");
+	bool tempBoolUsername;
+	bool check = false;
+	int i;
+	char tempusername[20];
+	cout << "\n20 Characters Maximum" << endl;
+	cout << "Username : ";
+	cin >> tempusername;
+	while (check != true)
+	{
+		for (i = 0; tempusername[i]; i++)
+		{
+		}
+		if (i > 20)
+		{
+			//system("CLS"); // clear screen
+			cout << "Only 20 Maximum characters" << endl;
+			cout << "Username : ";
+			cin >> tempusername;
+		}
+		else if (i < 20)
+		{
+			check = true;
+			break;
+		}
+	}
+	tempBoolUsername = checkUsername("donor.dat", tempusername);
+	while (tempBoolUsername == true)
+	{
+		bool check = false;
+		int i;
+		cout << "\nUsername Already exists! \n" << endl;
+		cout << "\n20 Characters Maximum" << endl;
+		cout << "Username : ";
+		cin >> tempusername;
+		while (check != false)
+		{
+			for (i = 0; tempusername[i]; i++)
+			{
+			}
+			if (i > 20)
+			{
+				//system("CLS"); // clear screen
+				cout << "Only 20 Maximum characters" << endl;
+				cout << "Username : ";
+				cin >> tempusername;
+			}
+			else if (i < 20)
+			{
+				check = true;
+				break;
+			}
+		}
+		tempBoolUsername = checkUsername("donor.dat", tempusername);
+	}
+	check = false;
+	for (int i = 0; i < 20; i++)
+	{
+		donor.Username[i] = tempusername[i];
+	}
+	cout << "\n20 Characters Maximum" << endl;
+	cout << "Password : ";
+	cin >> donor.Password;
+	while (check != true)
+	{
+		for (i = 0; donor.Password[i]; i++)
+		{
+		}
+		if (i > 20)
+		{
+			//system("CLS"); // clear screen
+			cout << "Only 20 Maximum characters" << endl;
+			cout << "Password : ";
+			cin >> donor.Password;
+			cin.ignore();
+		}
+		else if (i < 20)
+		{
+			check = true;
+			break;
+		}
+	}
+	DonorFile.write(reinterpret_cast<char*>(&donor), sizeof(donor));
+	DonorFile.close();
+}
+
+void displayDonorFile()
+{
+	fstream DonorFile;
+	Registration_Donor donor;
+
+	DonorFile.open("donor.dat", ios::in | ios::binary);
+
+	if (!DonorFile)
+	{
+		cout << "File not found";
+	}
+
+	DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+
+	while (!DonorFile.eof())
+	{
+		cout << "Name : " << donor.FirstName << " " << donor.MiddleName << " " << donor.LastName << endl;
+		cout << "Date Of Birth : " << donor.DOB << endl;
+		cout << "Nationalty : " << donor.Nationalty << endl;
+		cout << "Ethnicity : " << donor.Ethnicity << endl;
+		cout << "Gender : " << donor.Gender << endl;
+		cout << "City : " << donor.City << endl;
+		cout << "Contact Number : " << donor.ContactNumber << endl;
+		cout << "Email : " << donor.Email << endl;
+		cout << "Address : " << donor.Address << endl;
+		cout << "Conditions : " << donor.Conditions << endl;
+		cout << "Blood Group : " << donor.BloodGroup << endl;
+		cout << "Hospital : " << donor.Hospital_Name << endl;
+		cout << "Username : " << donor.Username << endl;
+		cout << "Password : " << donor.Password << endl;
+
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+	}
+
+	DonorFile.close();
 }
