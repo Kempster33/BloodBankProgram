@@ -92,6 +92,8 @@ inline void donation_benefits();
 void create_booking();
 void update_donor_information();
 
+void getDonorContacts();
+
 
 streamsize current_donor_position = 0;
 int main()
@@ -814,7 +816,7 @@ void recipient_screen()
 		case 3:
 		{
 			// Get Donors Details - (By giving Full name) - (Not Middle name)
-			// donor contact details for recipient
+			getDonorContacts();
 			cout << "Donor contacts" << endl;
 			break;
 		}
@@ -1207,10 +1209,51 @@ void create_booking() {
 		//Please enter a day in which you would like to visit.
 		// Please enter the time of donation.
 		//Here is your current booking..
-
 		//Farhan said I could preset values for unavailable bookings and then could just use donor.bookingtime etc.
 		//donor.bookingyear, month, day. , donor.bookingtime
+}
 
+void getDonorContacts()
+{
+	fstream DonorFile;
+	Registration_Donor donor;
+	bool found_user = false;
+	char firstName[Size];
+	char lastName[Size];
+	cin.ignore();
+	DonorFile.open("donor.dat", ios::in | ios::binary);
+	if (!DonorFile)
+	{
+		cout << "File not found!";
+	}
+	else
+	{
+		cout << "Enter Donors First name : ";
+		cin.getline(firstName, Size);
+		cout << endl;
+		cout << "Enter Donors Last name : ";
+		cin.getline(lastName, Size);
+		cout << endl;
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		while (!DonorFile.eof())
+		{
+			if (strcmp(firstName, donor.FirstName) == 0 && strcmp(lastName, donor.LastName) == 0)
+			{
+				cout << "Name : " << donor.FirstName << " " << donor.LastName << endl;
+				cout << "Gender : " << donor.Gender << endl;
+				cout << "Email : " << donor.Email << endl;
+				cout << "Contact Number : " << donor.ContactNumber << endl;
+				cout << "------------------------------------------------------" << endl << endl;
+				found_user = true;
+			}
+			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		}
+	}
+	if (found_user == false)
+	{
+		cout << "\nFirst & Last name not found in are System!\n" << endl;
+	}
+	DonorFile.close();
 }
 
 
