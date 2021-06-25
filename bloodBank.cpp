@@ -89,6 +89,9 @@ bool Donor_Login();
 void donor_screen();
 inline void procedure_to_donate();
 inline void donation_benefits();
+void create_booking();
+void update_donor_information();
+
 
 streamsize current_donor_position = 0;
 int main()
@@ -872,8 +875,8 @@ void donor_screen() {
 			break;
 		case 4:
 			//Update the donor information.
-			//update_donor_information();
-			//displayDonorFile();
+			update_donor_information();
+			displayDonorFile();
 			//Also edit booking informations. / switch case menu for both options.
 			break;
 		case 5:
@@ -1079,3 +1082,227 @@ void searchDonorInfo_BloodGroup_Location(char blood[], char location[])
 	}
 	DonorFile.close();
 }
+
+void update_donor_information() {
+
+	fstream DonorFile;
+	Registration_Donor edit_donor;
+	DonorFile.open("donor.dat", ios::in | ios::out | ios::binary);
+
+	if (!DonorFile)
+	{
+		cout << "Donor File not found! ";
+	}
+
+	int edit_donor_choice;
+
+	while (1) {
+		cout << "\nManage donor information menu : \n";
+		cout << "\n1. Update contact details : ";
+		cout << "\n2. Update health status : ";
+		cout << "\n3. Change your current booking : ";
+		cout << "\n4. Back\n";
+		cout << "Please enter option : ";
+		cin >> edit_donor_choice;
+		DonorFile.seekg(current_donor_position * sizeof(edit_donor), ios::beg);
+		DonorFile.read(reinterpret_cast<char*>(&edit_donor), sizeof(edit_donor));
+		cin.ignore();
+		switch (edit_donor_choice)
+		{
+		case 1:
+			char temp5;
+
+			cout << "\nFirst Name:";
+			cin.getline(edit_donor.FirstName, Size);
+			cout << "\nMiddle Name:";
+			cin.getline(edit_donor.MiddleName, Size);
+			cout << "\nLast Name:";
+			cin.getline(edit_donor.LastName, Size);
+			cout << "\nDate of birth:";
+			cin.getline(edit_donor.DOB, Size);
+
+			cout << "\nGender (M/F/X - Other): ";
+			cin >> temp5;
+			while (temp5 != 'M' && temp5 != 'F' && temp5 != 'X' && temp5 != 'm' && temp5 != 'f' && temp5 != 'x')
+			{
+				system("CLS"); // clear screen
+				cout << "\nPlease try again" << endl;
+				cout << "Gender (M/F/X - Other): ";
+				cin >> temp5;
+			}
+			edit_donor.Gender = temp5;
+			cin.ignore();
+
+			cout << "\nNationality:";
+			cin.getline(edit_donor.Nationalty, Size);
+			cout << "\nEthnicity:";
+			cin.getline(edit_donor.Ethnicity, Size);
+			cout << "\nCity:";
+			cin.getline(edit_donor.City, Size);
+			cout << "\nAddress:";
+			cin.getline(edit_donor.Address, Size);
+			cout << "\nContact Number:";
+			cin.getline(edit_donor.ContactNumber, Size);
+			cout << "\nEmail:";
+			cin.getline(edit_donor.Email, Size);
+			break;
+		case 2:
+			cout << "\nealth Conditions:";
+			cin.getline(edit_donor.Conditions, Size);
+			break;
+		case 3:
+			cout << "\nChange current booking: ";
+			break;
+		case 4:
+			return;
+		default:
+			cout << "\nPlease enter a valid option..\n";
+			break;
+		}
+		DonorFile.seekp(current_donor_position * sizeof(edit_donor), ios::beg);
+		DonorFile.write(reinterpret_cast<char*>(&edit_donor), sizeof(edit_donor));
+	}
+
+	DonorFile.close();
+}
+void create_booking() {
+	/*
+			###########################################################
+		   createBooking()
+		   displayBooking()
+		   editBooking()
+
+		   weekly display
+		   Do a starting date for a week.
+		   and an ending date.
+		   Make Booking struct., store this in .dat file.
+		   hospital..
+		   State assumptions..
+
+		   Name : Example
+		   DOB : 00/00/0000
+		   Condition : None
+		   Date : 00/00/0000
+		   Time : 00:00(AM / PM)
+
+								 Time Available
+								---------------
+		  -----------------------------------------------------------------
+		  |(Not Available)|  (Available)  |(Not Available)|(Not Available)|
+		  |    9:00AM    |    10:00AM     |     11:00AM    |     12:00PM |
+		  -----------------------------------------------------------------
+		  |(Not Available)|  (Available)  |  (Available)  |(Not Available)|
+		  |    1:00PM     |    2:00PM     |    3:00PM     |    4:00PM      |
+		  -----------------------------------------------------------------
+		  Booking_screen()
+	*			Booking for the donation must access the donor’s full name, dob, recent health
+				condition, date, time, and
+		*/
+		//please enter the starting date of the week 
+		//you would like to donate blood in. E.g : 1/1/2021
+		//please enter the ending date of the week
+		//you would like to donate blood in. E.g : 7/1/2021
+		//get current hospital name. + other details.
+		//Then display current bookings for this hospital. During this week.
+		//Please enter a day in which you would like to visit.
+		// Please enter the time of donation.
+		//Here is your current booking..
+
+		//Farhan said I could preset values for unavailable bookings and then could just use donor.bookingtime etc.
+		//donor.bookingyear, month, day. , donor.bookingtime
+
+}
+
+
+/*
+*GET RID OF CURRENT DONOR FUNCTION ETC...
+* Remove the use of a global variable
+*
+* Then we have to make sure the variables follow same naming styles, i.e only _'s or camelCase.
+* all initialsed structs.
+* Most efficient ways possible.
+* Little code reuse.
+* Lots of github commits. commit in small funcitons.
+* current problem : when dat file for donors doesn't exist. and register one user. Then enter incorrect data. Getline doesnt work.
+* Should have a check that makes sure user name and password doesnt already exist in database!!
+* type checking for switch cases and throw exceptions / handling.!! A+ !!. ROBUST
+
+	/* Recipient_Menu()
+
+		1. Donors Information by Blood Group
+		"Get all donors contacts by the same blood group they have looked up"
+
+		" User Input(Blood Group) : A+
+
+			---Information Found---
+
+		" Name: Example 1
+		" Blood Group : A+
+		" Location : Christchurch
+
+		" Name : Example 2
+		" Blood Group : A+
+		" Location : Auckland "
+
+		2. Donors by Blood Group and Location
+		"All donors names by type of blood group and location"
+
+		" User Input(Blood Group) : A+
+		  User Input(Location) : Christhcurch
+
+
+			---Information Found---
+
+		" Name: Example 1
+		" Blood Group : A+
+		" Location : Christchurch
+
+		" Name : Example 2
+		" Blood Group : A+
+		" Location : Chirstchurch
+
+		3. Donors contacts (find by given full name)      */
+
+
+
+
+		//************************************************************
+				/* Admin_Menu()
+
+					1. View Recipient and Donors information
+						all_reports();
+
+					" [Recipient]         |        [Donor]
+										  |
+						 Contact [1]      |      Contact [1]
+					  Name : _______      |        Name : _______
+					  Blood Group : __    |        Blood Group : __
+					  Location : ______   |        Location : _______
+					  ------------------------------------------------
+						 Contact [2]      |      Contact [2]
+					  Name : _______      |        Name : _______
+					  Blood Group : __    |        Blood Group : __
+					  Location : ______   |        Location : _______
+					  ------------------------------------------------
+						 Contact [3]      |      Contact [3]
+					  Name : _______      |        Name : _______
+					  Blood Group : __    |        Blood Group : __
+					  Location : ______   |        Location : _______ "
+
+					  We don't technically have match up donors and recipients, just have to show available donors.
+
+					  2. Update donors blood test report
+
+					  3. Donors report
+
+					  4. Recipient report
+
+					  5. Report by blood group
+
+					  6. Report by location
+				*/
+
+
+
+
+
