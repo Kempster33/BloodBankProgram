@@ -82,6 +82,9 @@ bool Recipient_Login();
 void recipient_screen();
 void checkVal(Registration_Recipient recipient);
 
+void searchDonorInfo_BloodGroup(char search[]);
+void searchDonorInfo_BloodGroup_Location(char blood[], char location[]);
+
 bool Donor_Login();
 void donor_screen();
 inline void procedure_to_donate();
@@ -722,13 +725,87 @@ void recipient_screen()
 		case 1:
 		{
 			// search for blood group
-			cout << "Search (Blood Group)" << endl;
+			char A_pos[] = { "A+" };
+			char A_neg[] = { "A-" };
+			char B_pos[] = { "B+" };
+			char B_neg[] = { "B-" };
+			char O_pos[] = { "O+" };
+			char O_neg[] = { "O-" };
+			char AB_pos[] = { "AB+" };
+			char AB_neg[] = { "AB-" };
+			char inputBlood[100];
+			cout << "Here are all the Blood group options (or type 'back' to go back to the menu)" << endl;
+			cout << "[A+] [A-]" << endl;
+			cout << "[B+] [B-]" << endl;
+			cout << "[O+] [O-]" << endl;
+			cout << "[AB+] [AB-]" << endl << endl;
+			cin.ignore();
+			cout << "Blood Group : ";
+			cin.getline(inputBlood, 100);
+			cout << endl;
+			while ((strcmp(A_pos, inputBlood) != 0) && (strcmp(A_neg, inputBlood) != 0) &&
+				(strcmp(B_pos, inputBlood) != 0) && (strcmp(B_neg, inputBlood) != 0) &&
+				(strcmp(O_pos, inputBlood) != 0) && (strcmp(O_neg, inputBlood) != 0) &&
+				(strcmp(AB_pos, inputBlood) != 0) && (strcmp(AB_neg, inputBlood) != 0))
+			{
+				cout << "\nPlease enter the correct Blood group (or type 'back' to go back to the menu)" << endl;
+				cout << "[A+] [A-]" << endl;
+				cout << "[B+] [B-]" << endl;
+				cout << "[O+] [O-]" << endl;
+				cout << "[AB+] [AB-]" << endl << endl;
+				cout << "Blood Group : ";
+				cin.getline(inputBlood, 100);
+				cout << endl;
+			}
+			searchDonorInfo_BloodGroup(inputBlood);
+			cout << "\nPress any key to conintue ...";
+			cin.get();
+			cout << endl;
 			break;
 		}
 		case 2:
 		{
 			// search for blood group and location
-			cout << "Search (Blood Group & Location)" << endl;
+			char A_pos[] = { "A+" };
+			char A_neg[] = { "A-" };
+			char B_pos[] = { "B+" };
+			char B_neg[] = { "B-" };
+			char O_pos[] = { "O+" };
+			char O_neg[] = { "O-" };
+			char AB_pos[] = { "AB+" };
+			char AB_neg[] = { "AB-" };
+			char inputBlood[100];
+			char location[100];
+			cout << "Here are all the Blood group options (or type 'back' to go back to the menu)" << endl;
+			cout << "[A+] [A-]" << endl;
+			cout << "[B+] [B-]" << endl;
+			cout << "[O+] [O-]" << endl;
+			cout << "[AB+] [AB-]" << endl << endl;
+			cin.ignore();
+			cout << "Blood Group : ";
+			cin.getline(inputBlood, 100);
+			cout << endl;
+			while ((strcmp(A_pos, inputBlood) != 0) && (strcmp(A_neg, inputBlood) != 0) &&
+				(strcmp(B_pos, inputBlood) != 0) && (strcmp(B_neg, inputBlood) != 0) &&
+				(strcmp(O_pos, inputBlood) != 0) && (strcmp(O_neg, inputBlood) != 0) &&
+				(strcmp(AB_pos, inputBlood) != 0) && (strcmp(AB_neg, inputBlood) != 0))
+			{
+				cout << "\nPlease enter the correct Blood group (or type 'back' to go back to the menu)" << endl;
+				cout << "[A+] [A-]" << endl;
+				cout << "[B+] [B-]" << endl;
+				cout << "[O+] [O-]" << endl;
+				cout << "[AB+] [AB-]" << endl << endl;
+				cout << "Blood Group : ";
+				cin.getline(inputBlood, 100);
+				cout << endl;
+			}
+			cout << "Please enter the hospital name : ";
+			cin.getline(location, 100);
+			cout << endl;
+			searchDonorInfo_BloodGroup_Location(inputBlood, location);
+			cout << "\nPress any key to conintue ...";
+			cin.get();
+			cout << endl;
 			break;
 		}
 		case 3:
@@ -917,4 +994,88 @@ inline void donation_benefits() {
 	cout << "\t6.Less than 3% of people in New Zealand are blood donors.\n";
 	cout << "\t7.Whether you choose to give blood, plasma or platelets, your donation will save and \n";
 	cout << "\timprove the lives of people across New Zealand.\n";
+}
+
+void searchDonorInfo_BloodGroup(char search[])
+{
+	fstream DonorFile;
+	Registration_Donor donor;
+	int i = 1;
+	DonorFile.open("donor.dat", ios::in | ios::out | ios::binary);
+	if (!DonorFile)
+	{
+		cout << "File not found!";
+	}
+	else
+	{
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		while (!DonorFile.eof())
+		{
+			if (strcmp(search, donor.BloodGroup) == 0)
+			{
+				cout << "\nDonor Form [" << i << "] " << endl;
+				cout << "----------------" << endl;
+				cout << "Name : " << donor.FirstName << " " << donor.LastName << endl;
+				cout << "Gender : " << donor.Gender << endl;
+				cout << "Blood Group : [" << donor.BloodGroup << "]" << endl;
+				cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+				cout << "Conditions : " << donor.Conditions << endl;
+				cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+				if (DonorFile.eof())
+				{
+					break;
+				}
+				else
+				{
+					cout << "Press any key to for next form ...";
+					cin.get();
+				}
+			}
+			i++;
+			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		}
+	}
+	DonorFile.close();
+}
+
+void searchDonorInfo_BloodGroup_Location(char blood[], char location[])
+{
+	fstream DonorFile;
+	Registration_Donor donor;
+	int i = 1;
+	DonorFile.open("donor.dat", ios::in | ios::out | ios::binary);
+	if (!DonorFile)
+	{
+		cout << "File not found!";
+	}
+	else
+	{
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		while (!DonorFile.eof())
+		{
+			if (location != donor.Hospital_Name)
+			{
+				cout << "Location not found!...\n" << endl;
+				return;
+			}
+			else
+			{
+				if (strcmp(blood, donor.BloodGroup) == 0 && strcmp(location, donor.Hospital_Name) == 0)
+				{
+					cout << "Donor Form [" << i << "] " << endl;
+					cout << "----------------" << endl;
+					cout << "Name : " << donor.FirstName << " " << donor.LastName << endl;
+					cout << "Gender : " << donor.Gender << endl;
+					cout << "Hospital : [" << donor.Hospital_Name << "]" << endl;
+					cout << "Blood Group : [" << donor.BloodGroup << "]" << endl;
+					cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+					cout << "Conditions : " << donor.Conditions << endl;
+					cout << "-----------------------------------------------------------------------------------------------------------" << endl << endl;
+					i++;
+				}
+			}
+			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		}
+	}
+	DonorFile.close();
 }
