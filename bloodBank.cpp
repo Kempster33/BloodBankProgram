@@ -144,6 +144,7 @@ void checkVal(Registration_Recipient recipient);
 void admin_screen();
 void display_Recipient_for_Admin();
 void display_Donor_for_Admin();
+void displayDonorReport();
 
 //Misc
 void inline printline(int size, char symbol);
@@ -164,11 +165,9 @@ void main_menu()
 	bool check = true;
 	int donor_record_found = false;
 
-	cout << "Welcome to ________ Blood Bank" << endl << endl;
+	cout << "Welcome to the Blood Bank Administration Program." << endl << endl;
 
-	cout << "What we do here ..." << endl << endl;
-
-	cout << "Contact Details" << endl;
+	cout << "Main Menu:" << endl;
 
 	while (check != false)
 	{
@@ -1856,8 +1855,7 @@ void admin_screen()
 		cout << "2. View Donor Information" << endl;
 		cout << "3. Report by Blood Group" << endl;
 		cout << "4. Report by Location" << endl;
-		cout << "5. Recipient Report" << endl;
-		cout << "6. Donor Report" << endl;
+		cout << "5. Weekly Report (Donor and Recipient)" << endl;
 		cout << "7. back\n" << endl;
 
 		cout << "Selection : ";
@@ -1880,22 +1878,21 @@ void admin_screen()
 		}
 		case '3':
 		{
-			// Report by Blood Group
+			//Donor Report by Blood Group
+			//Recipient Report by Blood Group
 			break;
 		}
 		case '4':
 		{
-			// Report by Location
+			//Donor Report by Location
+			//Recipient Report by Location
 			break;
 		}
 		case '5':
 		{
-			// Recipient Report
-			break;
-		}
-		case '6':
-		{
 			// Donor Report
+			displayDonorReport();
+			// Recipient Report
 			break;
 		}
 		case '7':
@@ -2026,6 +2023,16 @@ void display_Donor_for_Admin()
 	DonorFile.close();
 }
 
+void displayDonorReport() {
+	//Donor Report for Admin Menu.
+	cout << "";
+	displayDonorFile();
+}
+
+
+//void searchDonorBloodGroupReport(char blood[])
+//void searchDonorLocationReport(char location[])
+//updateDonorReport(char fname[])
 
 //Misc
 void inline printline(int size, char symbol) {
