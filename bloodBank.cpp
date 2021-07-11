@@ -151,6 +151,7 @@ void displayRecipientReport();
 void searchRecipientBloodGroupReport(char search[]);
 void searchDonorLocationReport(char search[]);
 void searchRecipientLocationReport(char search[]);
+void updateDonorReport(char uname[]);
 
 //Misc
 void inline printline(int size, char symbol);
@@ -1817,6 +1818,7 @@ void admin_screen()
 		cout << "3. Weekly Report (Donor and Recipient)" << endl;
 		cout << "4. Report by Blood Group" << endl;
 		cout << "5. Report by Location" << endl;
+		cout << "6. Update Specific Donor Record" << endl;
 		cout << "7. back\n" << endl;
 
 		cout << "Selection : ";
@@ -1876,7 +1878,6 @@ void admin_screen()
 				(strcmp(O_pos, inputBlood) != 0) && (strcmp(O_neg, inputBlood) != 0) &&
 				(strcmp(AB_pos, inputBlood) != 0) && (strcmp(AB_neg, inputBlood) != 0))
 			{
-
 				cout << "\nPlease enter the correct Blood group (or type 'back' to go back to the menu)" << endl;
 				cout << "[A+] [A-]" << endl;
 				cout << "[B+] [B-]" << endl;
@@ -1905,6 +1906,13 @@ void admin_screen()
 			searchRecipientLocationReport(inputHospital);
 			break;
 		}
+		case '6':
+			char inputUserName[20];
+			cout << "\nInput the user name of the donor's record / booking you wish to edit: ";
+			cin.ignore();
+			cin.getline(inputUserName, 20);
+			updateDonorReport(inputUserName);
+			break;
 		case '7':
 		{
 			// Go back
@@ -2368,8 +2376,38 @@ void searchRecipientLocationReport(char search[]) {
 	cout << endl << endl;
 	RecipientFile.close();
 }
+void updateDonorReport(char uname[]) {
+	//Update the current donor variable for positioning based off of the inputted username.
+	fstream DonorFile;
+	Registration_Donor donor;
+	int i = 1;
 
-//updateDonorReport(char fname[])
+	DonorFile.open("donor.dat", ios::in | ios::out | ios::binary);
+
+	if (!DonorFile)
+	{
+		cout << "File not found!";
+	}
+	else
+	{
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+
+		while (!DonorFile.eof())
+		{
+			if (strcmp(uname, donor.Username) == 0)
+			{
+				current_donor_position = DonorFile.tellg() / sizeof(donor) - 1;
+			}
+
+			i++;
+			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+		}
+	}
+	DonorFile.close();
+
+	//Run the update update_donor_information
+	update_donor_information();
+}
 
 //Misc
 void inline printline(int size, char symbol) {
