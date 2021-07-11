@@ -114,7 +114,7 @@ bool Admin_Login();
 
 // Display Function
 void displayRecipientFile(char tempUsername[]);
-void displayDonorFile();
+
 
 // Check Login (aren't the same) Function
 bool checkUsername(string fileName, char username[]);
@@ -128,7 +128,7 @@ inline void procedure_to_donate();
 inline void donation_benefits();
 void update_donor_information();
 void create_booking();
-void displayBooking();
+void displayBooking(char fname[31] = {});
 void updateDonorBookingStatus(string value);
 void deleteBooking(string fname, string mname, string lname);
 
@@ -932,71 +932,23 @@ void displayRecipientFile(char tempUsername[])
 	}
 	RecipientFile.close();
 }
-void displayDonorFile()
-{
-	fstream DonorFile;
-	Registration_Donor donor;
-
-	DonorFile.open("donor.dat", ios::in | ios::binary);
-
-	if (!DonorFile)
-	{
-		cout << "File not found";
-	}
-
-	DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
-
-	while (!DonorFile.eof())
-	{
-		cout << "Name : " << donor.FirstName << " " << donor.MiddleName << " " << donor.LastName << endl;
-		cout << "Date Of Birth : " << donor.DOB << endl;
-		cout << "Nationalty : " << donor.Nationalty << endl;
-		cout << "Ethnicity : " << donor.Ethnicity << endl;
-		cout << "Gender : " << donor.Gender << endl;
-		cout << "City : " << donor.City << endl;
-		cout << "Contact Number : " << donor.ContactNumber << endl;
-		cout << "Email : " << donor.Email << endl;
-		cout << "Address : " << donor.Address << endl;
-		cout << "Conditions : " << donor.Conditions << endl;
-		cout << "Blood Group : " << donor.BloodGroup << endl;
-		cout << "Hospital : " << donor.Hospital_Name << endl;
-		cout << "Username : " << donor.Username << endl;
-		cout << "Password : " << donor.Password << endl;
-
-		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
-	}
-
-	DonorFile.close();
-}
-void displayBooking() {
+void displayBooking(char fname[31]) {
 	//Display a booking record based on donors' full name.
 	fstream bookingFile;
 	donorBooking book;
 	bookingFile.open("booking.dat", ios::in | ios::out | ios::binary);
-	char fname[31];
-	char mname[31];
-	char lname[31];
+
 
 	if (!bookingFile)
 	{
 		cout << "Donor File not found! ";
 	}
 
-	//cout << "Display particular Booking\n";
-	//cout << "Enter first name of booking: ";
-	//cin.getline(fname, 20);
-	//cout << endl;
-	//cout << "Enter middle name of booking: ";
-	//cin.getline(mname, 20);
-	//cout << endl;
-	//cout << "Enter last name of booking: ";
-	//cin.getline(lname, 20);
-	//cout << endl;
-
+	
 	bookingFile.read(reinterpret_cast<char*>(&book), sizeof(book));
 	while (!bookingFile.eof()) {
 		//display the booking based of of the full name of donor.
-		//if (strcmp(fname, book.FirstName) == 0 && strcmp(mname, book.MiddleName) == 0 && strcmp(lname, book.LastName) == 0) {
+		if (strcmp(fname, book.FirstName) == 0) {
 
 		cout << "Name : " << book.FirstName << " " << book.MiddleName << " " << book.LastName << "\n";
 		cout << "DOB : " << book.DOB << "\n";
@@ -1004,8 +956,9 @@ void displayBooking() {
 		cout << "Booking Date " << book.booking_date_day << "/" << book.booking_date_month;
 		cout << "/" << book.booking_date_year << endl;
 		cout << "Booking Time :" << book.booking_time << "\n";
+		cout << "Booking Location :" << book.Hospital_Name << "\n";
 		//break;
-	//}
+	}
 		bookingFile.read(reinterpret_cast<char*>(&book), sizeof(book));
 	}
 	bookingFile.close();
@@ -2025,13 +1978,64 @@ void display_Donor_for_Admin()
 
 void displayDonorReport() {
 	//Donor Report for Admin Menu.
-	cout << "";
-	displayDonorFile();
+	fstream DonorFile;
+	Registration_Donor donor;
+	DonorFile.open("donor.dat", ios::in | ios::binary);
+
+	if (!DonorFile)
+	{
+		cout << "File not found";
+	}
+
+	DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+
+
+	cout << "\n***********************\n";
+	cout << "* Weekly Donor Report *";
+	cout << "\n***********************\n";
+
+	
+
+	while (!DonorFile.eof())
+	{
+		cout << "\n\n\t" << donor.FirstName << " " << donor.MiddleName << " " << donor.LastName << endl;
+		printline(40, '*');
+		cout << "Contact Details\n";
+		printline(40, '*');
+		cout << "Date Of Birth : " << donor.DOB << endl;
+		cout << "Nationalty : " << donor.Nationalty << endl;
+		cout << "Ethnicity : " << donor.Ethnicity << endl;
+		cout << "Gender : " << donor.Gender << endl;
+		cout << "City : " << donor.City << endl;
+		cout << "Contact Number : " << donor.ContactNumber << endl;
+		cout << "Email : " << donor.Email << endl;
+		cout << "Address : " << donor.Address << endl;
+		printline(40, '*');
+		cout << "Health Details\n";
+		printline(40, '*');
+		cout << "Conditions : " << donor.Conditions << endl;
+		cout << "Blood Group : " << donor.BloodGroup << endl;
+		cout << "Hospital : " << donor.Hospital_Name << endl;
+		printline(40, '*');
+		cout << "Account Details\n";
+		printline(40, '*');
+		cout << "Username : " << donor.Username << endl;
+		cout << "Password : " << donor.Password << endl;
+		printline(40, '*');
+		cout << "Booking Details\n";
+		printline(40, '*');
+		displayBooking(donor.FirstName);
+
+		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
+	}
+	cout << endl << endl;
+	DonorFile.close();
 }
 
 
 //void searchDonorBloodGroupReport(char blood[])
 //void searchDonorLocationReport(char location[])
+
 //updateDonorReport(char fname[])
 
 //Misc
