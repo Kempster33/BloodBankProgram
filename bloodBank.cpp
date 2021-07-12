@@ -119,7 +119,12 @@ void displayRecipientFile(char tempUsername[]);
 
 // Check Login (aren't the same) Function
 bool checkUsername(string fileName, char username[]);
-
+// Check array size isnt above array limit
+bool checkValidArraySize(char arr[], int setSize);
+// Check array if only Alphabet letters are inside
+bool checkValidInput(char arr[]);
+// Check array if only Numbers are inside
+bool checkValidNumbers(char arr[]);
 // Main Menu
 void main_menu();
 
@@ -271,11 +276,14 @@ void main_menu()
 	}
 }
 
-//Register Functions
+//Register Functions.
 void Register_Recipient()
 {
 	fstream RecipientFile;
 	Registration_Recipient recipient;
+	bool tempAlphabetValid;
+	bool tempArraySize;
+	bool tempNumberValid;
 
 	RecipientFile.open("recipient.dat", ios::out | ios::app | ios::binary);
 
@@ -299,31 +307,256 @@ void Register_Recipient()
 	cout << " Rigster Recipient" << endl;
 	cout << "-------------------\n" << endl;
 
+	// First Name -------------------------------------------------------------------------------------
 	cout << "First Name : ";
 	cin >> recipient.FirstName;
+	
+	tempAlphabetValid = checkValidInput(recipient.FirstName);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "First Name : ";
+		cin >> recipient.FirstName;
+		tempAlphabetValid = checkValidInput(recipient.FirstName);
+	}
+	
+	tempArraySize = checkValidArraySize(recipient.FirstName, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "First Name : ";
+		cin >> recipient.FirstName;
+		tempAlphabetValid = checkValidInput(recipient.FirstName);
+		
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "First Name : ";
+			cin >> recipient.FirstName;
+			tempAlphabetValid = checkValidInput(recipient.FirstName);
+		}
+		
+		tempArraySize = checkValidArraySize(recipient.FirstName, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Middle Name -----------------------------------------------------------------------------------
 	cout << "Middle Name : ";
 	cin >> recipient.MiddleName;
+	
+	tempAlphabetValid = checkValidInput(recipient.MiddleName);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Middle Name : ";
+		cin >> recipient.MiddleName;
+		tempAlphabetValid = checkValidInput(recipient.MiddleName);
+	}
+	
+	tempArraySize = checkValidArraySize(recipient.MiddleName, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Middle Name : ";
+		cin >> recipient.MiddleName;
+		tempAlphabetValid = checkValidInput(recipient.MiddleName);
+		
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Middle Name : ";
+			cin >> recipient.MiddleName;
+			tempAlphabetValid = checkValidInput(recipient.MiddleName);
+		}
+		
+		tempArraySize = checkValidArraySize(recipient.MiddleName, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Last Name -------------------------------------------------------------------------------------
 	cout << "Last Name : ";
 	cin >> recipient.LastName;
+	
+	tempAlphabetValid = checkValidInput(recipient.LastName);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Last Name : ";
+		cin >> recipient.LastName;
+		tempAlphabetValid = checkValidInput(recipient.LastName);
+	}
+	
+	tempArraySize = checkValidArraySize(recipient.LastName, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Last Name : ";
+		cin >> recipient.LastName;
+		tempAlphabetValid = checkValidInput(recipient.LastName);
+		
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Last Name : ";
+			cin >> recipient.LastName;
+			tempAlphabetValid = checkValidInput(recipient.LastName);
+		}
+		
+		tempArraySize = checkValidArraySize(recipient.LastName, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Date of Birth ---------------------------------------------------------------------------------
 	cout << "Date Of Birth : ";
 	cin >> recipient.DOB;
+	tempArraySize = checkValidArraySize(recipient.DOB, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Date Of Birth : ";
+		cin >> recipient.DOB;
+		tempArraySize = checkValidArraySize(recipient.DOB, Size);
+	}
 	cin.ignore();
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Nationality -----------------------------------------------------------------------------------
 	cout << "Nationality : ";
-	cin.getline(recipient.Nationalty, Size);
+	cin >> recipient.Nationalty;
+	tempAlphabetValid = checkValidInput(recipient.Nationalty);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Nationalty : ";
+		cin >> recipient.Nationalty;
+		tempAlphabetValid = checkValidInput(recipient.Nationalty);
+	}
+	
+	tempArraySize = checkValidArraySize(recipient.Nationalty, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Nationalty : ";
+		cin >> recipient.Nationalty;
+		tempAlphabetValid = checkValidInput(recipient.Nationalty);
+		
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Nationalty : ";
+			cin >> recipient.Nationalty;
+			tempAlphabetValid = checkValidInput(recipient.Nationalty);
+		}
+		
+		tempArraySize = checkValidArraySize(recipient.Nationalty, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// City ------------------------------------------------------------------------------------------
 	cout << "City : ";
-	cin.getline(recipient.City, Size);
+	cin >> recipient.City;
+	tempAlphabetValid = checkValidInput(recipient.City);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "City : ";
+		cin >> recipient.City;
+		tempAlphabetValid = checkValidInput(recipient.City);
+	}
+	
+	tempArraySize = checkValidArraySize(recipient.City, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "City : ";
+		cin >> recipient.City;
+		tempAlphabetValid = checkValidInput(recipient.City);
+		
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "City : ";
+			cin >> recipient.City;
+			tempAlphabetValid = checkValidInput(recipient.City);
+		}
+		
+		tempArraySize = checkValidArraySize(recipient.City, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Hospital --------------------------------------------------------------------------------------
 	cout << "Hospital : ";
-	cin.getline(recipient.Hospital_Name, Size);
+	cin >> recipient.Hospital_Name;
+	tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Hospital : ";
+		cin >> recipient.Hospital_Name;
+		tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
+	}
+	    
+	tempArraySize = checkValidArraySize(recipient.Hospital_Name, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Hospital : ";
+		cin >> recipient.Hospital_Name;
+		tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
+		
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Hospital : ";
+			cin >> recipient.Hospital_Name;
+			tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
+		}
+		
+		tempArraySize = checkValidArraySize(recipient.Hospital_Name, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Ethnicity -------------------------------------------------------------------------------------
 	cout << "Ethnicity : ";
-	cin.getline(recipient.Ethnicity, Size);
+	cin >> recipient.Ethnicity;
+	tempAlphabetValid = checkValidInput(recipient.Ethnicity);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Ethnicity : ";
+		cin >> recipient.Ethnicity;
+		tempAlphabetValid = checkValidInput(recipient.Ethnicity);
+	}
 
+	tempArraySize = checkValidArraySize(recipient.Ethnicity, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Ethnicity : ";
+		cin >> recipient.Ethnicity;
+		tempAlphabetValid = checkValidInput(recipient.Ethnicity);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Ethnicity : ";
+			cin >> recipient.Ethnicity;
+			tempAlphabetValid = checkValidInput(recipient.Ethnicity);
+		}
+
+		tempArraySize = checkValidArraySize(recipient.Ethnicity, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Gender ----------------------------------------------------------------------------------------
 	cout << "Gender (M/F/X - Other): ";
 	cin >> temp;
 	while (temp != 'M' && temp != 'F' && temp != 'X' && temp != 'm' && temp != 'f' && temp != 'x')
@@ -335,10 +568,43 @@ void Register_Recipient()
 	}
 	recipient.Gender = temp;
 	cin.ignore();
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Conditions ------------------------------------------------------------------------------------
 	cout << "Any Health Conditions : ";
-	cin.getline(recipient.Conditions, 255);
+	cin >> recipient.Conditions;
+	tempAlphabetValid = checkValidInput(recipient.Conditions);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Any Health Conditions : ";
+		cin >> recipient.Conditions;
+		tempAlphabetValid = checkValidInput(recipient.Conditions);
+	}
 
+	tempArraySize = checkValidArraySize(recipient.Conditions, 255);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Any Health Conditions : ";
+		cin >> recipient.Conditions;
+		tempAlphabetValid = checkValidInput(recipient.Conditions);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Any Health Conditions : ";
+			cin >> recipient.Conditions;
+			tempAlphabetValid = checkValidInput(recipient.Conditions);
+		}
+
+		tempArraySize = checkValidArraySize(recipient.Conditions, 255);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Blood Group -----------------------------------------------------------------------------------
 	cout << "Blood Group (If not sure type None) : ";
 	cin >> recipient.BloodGroup;
 
@@ -361,16 +627,73 @@ void Register_Recipient()
 
 	cin.ignore();
 
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Contact Number --------------------------------------------------------------------------------
 	cout << "Contact Number : ";
-	cin.getline(recipient.ContactNumber, Size);
+	cin >> recipient.ContactNumber;
+	tempNumberValid = checkValidNumbers(recipient.ContactNumber);
+	while (tempNumberValid != true)
+	{
+		cout << "\nPlease try again with using number characters." << endl;
+		cout << "Contact Number : ";
+		cin >> recipient.ContactNumber;
+		tempNumberValid = checkValidNumbers(recipient.ContactNumber);
+	}
 
+	tempArraySize = checkValidArraySize(recipient.ContactNumber, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Contact Number : ";
+		cin >> recipient.ContactNumber;
+		tempNumberValid = checkValidNumbers(recipient.ContactNumber);
+
+		while (tempNumberValid != true)
+		{
+			cout << "\nPlease try again with using number characters." << endl;
+			cout << "Contact Number : ";
+			cin >> recipient.ContactNumber;
+			tempNumberValid = checkValidNumbers(recipient.ContactNumber);
+		}
+
+		tempArraySize = checkValidArraySize(recipient.ContactNumber, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Email -----------------------------------------------------------------------------------------
 	cout << "Email : ";
-	cin.getline(recipient.Email, Size);
+	cin >> recipient.Email;
+	tempArraySize = checkValidArraySize(recipient.Email, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Email : ";
+		cin >> recipient.Email;
 
+		tempArraySize = checkValidArraySize(recipient.Email, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Address ---------------------------------------------------------------------------------------
 	cout << "Address : ";
-	cin.getline(recipient.Address, Size);
-	//system("CLS");
+	cin >> recipient.Address;
+	tempArraySize = checkValidArraySize(recipient.Address, 100);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Address : ";
+		cin >> recipient.Address;
 
+		tempArraySize = checkValidArraySize(recipient.Address, 100);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Username --------------------------------------------------------------------------------------
 	bool tempBoolUsername;
 	bool check = false;
 	int i;
@@ -423,7 +746,6 @@ void Register_Recipient()
 
 			if (i > 20)
 			{
-				//system("CLS"); // clear screen
 				cout << "Only 20 Maximum characters" << endl;
 				cout << "Username : ";
 				cin >> tempusername;
@@ -444,7 +766,10 @@ void Register_Recipient()
 	{
 		recipient.Username[i] = tempusername[i];
 	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Password --------------------------------------------------------------------------------------
 	cout << "\n20 Characters Maximum" << endl;
 	cout << "Password : ";
 	cin >> recipient.Password;
@@ -457,7 +782,6 @@ void Register_Recipient()
 
 		if (i > 20)
 		{
-			//system("CLS"); // clear screen
 			cout << "Only 20 Maximum characters" << endl;
 			cout << "Password : ";
 			cin >> recipient.Password;
@@ -468,7 +792,10 @@ void Register_Recipient()
 			break;
 		}
 	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Validation Check ------------------------------------------------------------------------------
 	char valcheck;
 	bool tempBool;
 
@@ -483,8 +810,9 @@ void Register_Recipient()
 
 	tempBool = getValidation(valcheck);
 	recipient.Validation = tempBool;
-	cout << endl;
+	// -----------------------------------------------------------------------------------------------
 
+	cout << endl;
 	cin.ignore();
 
 	RecipientFile.write(reinterpret_cast<char*>(&recipient), sizeof(recipient));
@@ -495,6 +823,9 @@ void Register_Donor()
 {
 	fstream DonorFile;
 	Registration_Donor donor;
+	bool tempAlphabetValid;
+	bool tempArraySize;
+	bool tempNumberValid;
 
 	DonorFile.open("donor.dat", ios::out | ios::app | ios::binary);
 
@@ -519,31 +850,256 @@ void Register_Donor()
 	cout << " Register Donor" << endl;
 	cout << "-------------------\n" << endl;
 
+	// First Name -------------------------------------------------------------------------------------
 	cout << "First Name : ";
 	cin >> donor.FirstName;
 
+	tempAlphabetValid = checkValidInput(donor.FirstName);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "First Name : ";
+		cin >> donor.FirstName;
+		tempAlphabetValid = checkValidInput(donor.FirstName);
+	}
+
+	tempArraySize = checkValidArraySize(donor.FirstName, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "First Name : ";
+		cin >> donor.FirstName;
+		tempAlphabetValid = checkValidInput(donor.FirstName);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "First Name : ";
+			cin >> donor.FirstName;
+			tempAlphabetValid = checkValidInput(donor.FirstName);
+		}
+
+		tempArraySize = checkValidArraySize(donor.FirstName, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Middle Name -----------------------------------------------------------------------------------
 	cout << "Middle Name : ";
 	cin >> donor.MiddleName;
 
+	tempAlphabetValid = checkValidInput(donor.MiddleName);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Middle Name : ";
+		cin >> donor.MiddleName;
+		tempAlphabetValid = checkValidInput(donor.MiddleName);
+	}
+
+	tempArraySize = checkValidArraySize(donor.MiddleName, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Middle Name : ";
+		cin >> donor.MiddleName;
+		tempAlphabetValid = checkValidInput(donor.MiddleName);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Middle Name : ";
+			cin >> donor.MiddleName;
+			tempAlphabetValid = checkValidInput(donor.MiddleName);
+		}
+
+		tempArraySize = checkValidArraySize(donor.MiddleName, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Last Name -------------------------------------------------------------------------------------
 	cout << "Last Name : ";
 	cin >> donor.LastName;
 
+	tempAlphabetValid = checkValidInput(donor.LastName);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Last Name : ";
+		cin >> donor.LastName;
+		tempAlphabetValid = checkValidInput(donor.LastName);
+	}
+
+	tempArraySize = checkValidArraySize(donor.LastName, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Last Name : ";
+		cin >> donor.LastName;
+		tempAlphabetValid = checkValidInput(donor.LastName);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Last Name : ";
+			cin >> donor.LastName;
+			tempAlphabetValid = checkValidInput(donor.LastName);
+		}
+
+		tempArraySize = checkValidArraySize(donor.LastName, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Date of Birth ---------------------------------------------------------------------------------
 	cout << "Date Of Birth : ";
 	cin >> donor.DOB;
+	tempArraySize = checkValidArraySize(donor.DOB, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Date Of Birth : ";
+		cin >> donor.DOB;
+		tempArraySize = checkValidArraySize(donor.DOB, Size);
+	}
 	cin.ignore();
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Nationality -----------------------------------------------------------------------------------
 	cout << "Nationality : ";
-	cin.getline(donor.Nationalty, Size);
+	cin >> donor.Nationalty;
+	tempAlphabetValid = checkValidInput(donor.Nationalty);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Nationalty : ";
+		cin >> donor.Nationalty;
+		tempAlphabetValid = checkValidInput(donor.Nationalty);
+	}
 
+	tempArraySize = checkValidArraySize(donor.Nationalty, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Nationalty : ";
+		cin >> donor.Nationalty;
+		tempAlphabetValid = checkValidInput(donor.Nationalty);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Nationalty : ";
+			cin >> donor.Nationalty;
+			tempAlphabetValid = checkValidInput(donor.Nationalty);
+		}
+
+		tempArraySize = checkValidArraySize(donor.Nationalty, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// City ------------------------------------------------------------------------------------------
 	cout << "City : ";
-	cin.getline(donor.City, Size);
+	cin >> donor.City;
+	tempAlphabetValid = checkValidInput(donor.City);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "City : ";
+		cin >> donor.City;
+		tempAlphabetValid = checkValidInput(donor.City);
+	}
 
+	tempArraySize = checkValidArraySize(donor.City, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "City : ";
+		cin >> donor.City;
+		tempAlphabetValid = checkValidInput(donor.City);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "City : ";
+			cin >> donor.City;
+			tempAlphabetValid = checkValidInput(donor.City);
+		}
+
+		tempArraySize = checkValidArraySize(donor.City, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Hospital --------------------------------------------------------------------------------------
 	cout << "Hospital : ";
-	cin.getline(donor.Hospital_Name, Size);
+	cin >> donor.Hospital_Name;
+	tempAlphabetValid = checkValidInput(donor.Hospital_Name);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Hospital : ";
+		cin >> donor.Hospital_Name;
+		tempAlphabetValid = checkValidInput(donor.Hospital_Name);
+	}
 
+	tempArraySize = checkValidArraySize(donor.Hospital_Name, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Hospital : ";
+		cin >> donor.Hospital_Name;
+		tempAlphabetValid = checkValidInput(donor.Hospital_Name);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Hospital : ";
+			cin >> donor.Hospital_Name;
+			tempAlphabetValid = checkValidInput(donor.Hospital_Name);
+		}
+
+		tempArraySize = checkValidArraySize(donor.Hospital_Name, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Ethnicity -------------------------------------------------------------------------------------
 	cout << "Ethnicity : ";
-	cin.getline(donor.Ethnicity, Size);
+	cin >> donor.Ethnicity;
+	tempAlphabetValid = checkValidInput(donor.Ethnicity);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Ethnicity : ";
+		cin >> donor.Ethnicity;
+		tempAlphabetValid = checkValidInput(donor.Ethnicity);
+	}
 
+	tempArraySize = checkValidArraySize(donor.Ethnicity, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Ethnicity : ";
+		cin >> donor.Ethnicity;
+		tempAlphabetValid = checkValidInput(donor.Ethnicity);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Ethnicity : ";
+			cin >> donor.Ethnicity;
+			tempAlphabetValid = checkValidInput(donor.Ethnicity);
+		}
+
+		tempArraySize = checkValidArraySize(donor.Ethnicity, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Gender ----------------------------------------------------------------------------------------
 	cout << "Gender (M/F/X - Other): ";
 	cin >> temp;
 	while (temp != 'M' && temp != 'F' && temp != 'X' && temp != 'm' && temp != 'f' && temp != 'x')
@@ -555,10 +1111,43 @@ void Register_Donor()
 	}
 	donor.Gender = temp;
 	cin.ignore();
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Conditions ------------------------------------------------------------------------------------
 	cout << "Any Health Conditions : ";
-	cin.getline(donor.Conditions, 255);
+	cin >> donor.Conditions;
+	tempAlphabetValid = checkValidInput(donor.Conditions);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using alphabet characters." << endl;
+		cout << "Any Health Conditions : ";
+		cin >> donor.Conditions;
+		tempAlphabetValid = checkValidInput(donor.Conditions);
+	}
 
+	tempArraySize = checkValidArraySize(donor.Conditions, 255);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Any Health Conditions : ";
+		cin >> donor.Conditions;
+		tempAlphabetValid = checkValidInput(donor.Conditions);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Any Health Conditions : ";
+			cin >> donor.Conditions;
+			tempAlphabetValid = checkValidInput(donor.Conditions);
+		}
+
+		tempArraySize = checkValidArraySize(donor.Conditions, 255);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Blood Group -----------------------------------------------------------------------------------
 	cout << "Blood Group (If not sure type None) : ";
 	cin >> donor.BloodGroup;
 
@@ -579,23 +1168,75 @@ void Register_Donor()
 		cin >> donor.BloodGroup;
 	}
 
-	//if ((strcmp(none1, donor.BloodGroup) == 0) || (strcmp(none2, donor.BloodGroup) == 0))
-	//{
-	//	randomBloodGroup(donor.BloodGroup);
-	//}
-
 	cin.ignore();
 
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Contact Number --------------------------------------------------------------------------------
 	cout << "Contact Number : ";
-	cin.getline(donor.ContactNumber, Size);
+	cin >> donor.ContactNumber;
+	tempAlphabetValid = checkValidNumbers(donor.ContactNumber);
+	while (tempAlphabetValid != true)
+	{
+		cout << "\nPlease try again with using number characters." << endl;
+		cout << "Contact Number : ";
+		cin >> donor.ContactNumber;
+		tempAlphabetValid = checkValidNumbers(donor.ContactNumber);
+	}
 
+	tempArraySize = checkValidArraySize(donor.ContactNumber, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Contact Number : ";
+		cin >> donor.ContactNumber;
+		tempAlphabetValid = checkValidNumbers(donor.ContactNumber);
+
+		while (tempAlphabetValid != true)
+		{
+			cout << "\nPlease try again with using number characters." << endl;
+			cout << "Contact Number : ";
+			cin >> donor.ContactNumber;
+			tempAlphabetValid = checkValidNumbers(donor.ContactNumber);
+		}
+
+		tempArraySize = checkValidArraySize(donor.ContactNumber, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Email -----------------------------------------------------------------------------------------
 	cout << "Email : ";
-	cin.getline(donor.Email, Size);
+	cin >> donor.Email;
+	tempArraySize = checkValidArraySize(donor.Email, Size);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Email : ";
+		cin >> donor.Email;
 
+		tempArraySize = checkValidArraySize(donor.Email, Size);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Address ---------------------------------------------------------------------------------------
 	cout << "Address : ";
-	cin.getline(donor.Address, Size);
-	//system("CLS");
+	cin >> donor.Address;
+	tempArraySize = checkValidArraySize(donor.Address, 100);
+	while (tempArraySize != true)
+	{
+		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "Address : ";
+		cin >> donor.Address;
 
+		tempArraySize = checkValidArraySize(donor.Address, 100);
+	}
+	// -----------------------------------------------------------------------------------------------
+
+
+	// Username --------------------------------------------------------------------------------------
 	bool tempBoolUsername;
 	bool check = false;
 	int i;
@@ -648,7 +1289,6 @@ void Register_Donor()
 
 			if (i > 20)
 			{
-				//system("CLS"); // clear screen
 				cout << "Only 20 Maximum characters" << endl;
 				cout << "Username : ";
 				cin >> tempusername;
@@ -669,7 +1309,10 @@ void Register_Donor()
 	{
 		donor.Username[i] = tempusername[i];
 	}
+	// -----------------------------------------------------------------------------------------------
 
+
+	// Password --------------------------------------------------------------------------------------
 	cout << "\n20 Characters Maximum" << endl;
 	cout << "Password : ";
 	cin >> donor.Password;
@@ -682,11 +1325,9 @@ void Register_Donor()
 
 		if (i > 20)
 		{
-			//system("CLS"); // clear screen
 			cout << "Only 20 Maximum characters" << endl;
 			cout << "Password : ";
 			cin >> donor.Password;
-			cin.ignore();
 		}
 		else if (i < 20)
 		{
@@ -694,13 +1335,14 @@ void Register_Donor()
 			break;
 		}
 	}
+	// -----------------------------------------------------------------------------------------------
 
 	DonorFile.write(reinterpret_cast<char*>(&donor), sizeof(donor));
 
 	DonorFile.close();
 }
 
-//Login Functions
+//Login Functions.
 bool Recipient_Login(char tempUsername[])
 {
 	fstream RecipientFile;
@@ -951,22 +1593,22 @@ void displayBooking(char username[Size]) {
 		cout << "Donor File not found! ";
 	}
 
-	
+
 	bookingFile.read(reinterpret_cast<char*>(&book), sizeof(book));
 	while (!bookingFile.eof()) {
 		//display the booking based on the username of the donor.
-		
+
 		if (strcmp(username, book.Username) == 0) {
 
-		cout << "Name : " << book.FirstName << " " << book.MiddleName << " " << book.LastName << "\n";
-		cout << "DOB : " << book.DOB << "\n";
-		cout << "Condition : " << book.Conditions << "\n";
-		cout << "Booking Date " << book.booking_date_day << "/" << book.booking_date_month;
-		cout << "/" << book.booking_date_year << endl;
-		cout << "Booking Time :" << book.booking_time << "\n";
-		cout << "Booking Location :" << book.Hospital_Name << "\n";
-		//break;
-	}
+			cout << "Name : " << book.FirstName << " " << book.MiddleName << " " << book.LastName << "\n";
+			cout << "DOB : " << book.DOB << "\n";
+			cout << "Condition : " << book.Conditions << "\n";
+			cout << "Booking Date " << book.booking_date_day << "/" << book.booking_date_month;
+			cout << "/" << book.booking_date_year << endl;
+			cout << "Booking Time :" << book.booking_time << "\n";
+			cout << "Booking Location :" << book.Hospital_Name << "\n";
+			//break;
+		}
 		bookingFile.read(reinterpret_cast<char*>(&book), sizeof(book));
 	}
 	bookingFile.close();
@@ -1456,9 +2098,9 @@ void create_booking() {
 	cout << "\nBooking Screen\n";
 	cout << "Please enter the starting date of the week\n";
 	cout << "you would like to donate blood in E.g: 01-FEB-2021: ";
-	
+
 	//Can change this date for the week shown. However make sure to delete .dat every time!!
-	
+
 	//Seperating the day, month, year from inputted dates to store in booking record.
 	string start_day = donor_start_date.substr(0, 2);
 	string start_month = donor_start_date.substr(3, 3);
@@ -1504,10 +2146,10 @@ void create_booking() {
 
 		while (!bookingsFileTest.eof())
 		{
-				/*
-				*	check through the existing bookings to see if any exist.
-				*		then update the 2d array accordingly.
-				*/
+			/*
+			*	check through the existing bookings to see if any exist.
+			*		then update the 2d array accordingly.
+			*/
 			for (int i = 0; i < 7; i++)
 			{
 				if (strcmp(testBooking.booking_day_name, days_of_week[i].c_str()) == 0) {
@@ -1551,7 +2193,7 @@ void create_booking() {
 	//Validating the user's inputted day of the week for their booking.
 	while (valid_day == false) {
 		cout << "Please enter the day of the week in which you would like to donate: ";
-		
+
 		getline(cin, booking_day);
 		for (int i = 0; i < 7; i++)
 		{
@@ -1579,12 +2221,12 @@ void create_booking() {
 				valid_day = true;
 			}
 		}
-		if (valid_day == false )
+		if (valid_day == false)
 			cout << "\nPlease enter a valid week day!!\n\n";
 	}
 
 
-	
+
 	//Get user booking time and make sure its valid..
 	while (valid_time == false) {
 		cout << "Please enter an available booking slot:";
@@ -1627,7 +2269,7 @@ void create_booking() {
 
 	bookingFile.write(reinterpret_cast<char*>(&currentBooking), sizeof(currentBooking));
 	bookingFile.close();
-	
+
 }
 void updateDonorBookingStatus(string value)
 {
@@ -1685,7 +2327,7 @@ void deleteBooking(string uname) {
 	/*	Deletes the file if exists */
 	if (rename(oldname1, newname1) != 0)
 		perror("\nError renaming old file.\n");
-	
+
 
 	/*	Deletes the file if exists */
 	if (remove(newname1) != 0)
@@ -1797,7 +2439,7 @@ void update_donor_information() {
 		}
 		DonorFile.seekp(current_donor_position * sizeof(edit_donor), ios::beg);
 		DonorFile.write(reinterpret_cast<char*>(&edit_donor), sizeof(edit_donor));
-		
+
 
 	}
 
@@ -2162,7 +2804,7 @@ void searchDonorBloodGroupReport(char blood[]) {
 	else
 	{
 		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
-	
+
 		cout << "\n********************************\n";
 		cout << "* Donor Report's via blood type*";
 		cout << "\n********************************\n";
@@ -2367,7 +3009,7 @@ void searchRecipientLocationReport(char search[]) {
 				cout << "Username : " << recipient.Username << endl;
 				cout << "Password : " << recipient.Password << endl;
 				printline(40, '*');
-				
+
 			}
 			i++;
 			RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
@@ -2409,6 +3051,53 @@ void updateDonorReport(char uname[]) {
 	update_donor_information();
 }
 
+//Check array Size isnt above array limit.
+bool checkValidArraySize(char arr[], int setSize)
+{
+	int arrSize;
+	for (arrSize = 0; arr[arrSize] != '\0'; arrSize++)
+	{
+		// counting the array size with a for loop, it will stop when it hits the null character.
+	}
+	
+	if (arrSize < setSize)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+//Check array if only Alphabet letters are inside.
+bool checkValidInput(char arr[])
+{
+	int arrSize;
+	for (arrSize = 0; arr[arrSize] != '\0'; arrSize++)
+	{
+		if (!isalpha(arr[arrSize]))
+		{
+			return false;
+		}
+	}
+	return true;
+
+}
+
+//Check array if only Numbers are inside.
+bool checkValidNumbers(char arr[])
+{
+	int arrSize;
+	for (arrSize = 0; arr[arrSize] != '\0'; arrSize++)
+	{
+		if (!isdigit(arr[arrSize]))
+		{
+			return false;
+		}
+	}
+	return true;
+}
 //Misc
 void inline printline(int size, char symbol) {
 	//Print a line based on the size and symbol as arguments.
@@ -2418,8 +3107,4 @@ void inline printline(int size, char symbol) {
 	}
 	cout << endl;
 }
-
-
-
-
 
