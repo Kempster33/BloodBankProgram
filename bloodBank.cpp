@@ -7,6 +7,10 @@ Type check with throw exception for switch case menus.
 Make sure code entered doesnt exceed buffers.
 */
 
+/*      NOTE
+      --------  
+	* Type checking for switch case (characters or integers)
+*/
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -116,15 +120,27 @@ bool Admin_Login();
 // Display Function
 void displayRecipientFile(char tempUsername[]);
 
-
+// Validation Functions 
+//-----------------------------------------------------
 // Check Login (aren't the same) Function
 bool checkUsername(string fileName, char username[]);
+
 // Check array size isnt above array limit
 bool checkValidArraySize(char arr[], int setSize);
+
 // Check array if only Alphabet letters are inside
 bool checkValidInput(char arr[]);
+
 // Check array if only Numbers are inside
 bool checkValidNumbers(char arr[]);
+
+// Check string if only Alphabet letters are inside
+bool checkValidStringInput(string str);
+
+// Check string if only Numbers are inside
+bool checkValidStringNumberInput(string str);
+//-----------------------------------------------------
+
 // Main Menu
 void main_menu();
 
@@ -302,6 +318,7 @@ void Register_Recipient()
 	char AB_neg[] = { "AB-" };
 	char none1[] = { "None" };
 	char none2[] = { "none" };
+	char tempGender;
 	char temp;
 
 	cout << " Rigster Recipient" << endl;
@@ -558,16 +575,18 @@ void Register_Recipient()
 
 	// Gender ----------------------------------------------------------------------------------------
 	cout << "Gender (M/F/X - Other): ";
-	cin >> temp;
-	while (temp != 'M' && temp != 'F' && temp != 'X' && temp != 'm' && temp != 'f' && temp != 'x')
+	cin >> tempGender;
+
+	while (tempGender != 'M' && tempGender != 'F' && tempGender != 'X' && tempGender != 'm' && tempGender != 'f' && tempGender != 'x')
 	{
+		cin.ignore(100, '\n');
 		//system("CLS"); // clear screen
+
 		cout << "\nPlease try again" << endl;
 		cout << "Gender (M/F/X - Other): ";
-		cin >> temp;
+		cin >> tempGender;
 	}
-	recipient.Gender = temp;
-	cin.ignore();
+	recipient.Gender = tempGender;
 	// -----------------------------------------------------------------------------------------------
 
 
@@ -586,7 +605,7 @@ void Register_Recipient()
 	tempArraySize = checkValidArraySize(recipient.Conditions, 255);
 	while (tempArraySize != true)
 	{
-		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "\nPlease try again with only 255 characters limit." << endl;
 		cout << "Any Health Conditions : ";
 		cin >> recipient.Conditions;
 		tempAlphabetValid = checkValidInput(recipient.Conditions);
@@ -684,7 +703,7 @@ void Register_Recipient()
 	tempArraySize = checkValidArraySize(recipient.Address, 100);
 	while (tempArraySize != true)
 	{
-		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "\nPlease try again with only 100 characters limit." << endl;
 		cout << "Address : ";
 		cin >> recipient.Address;
 
@@ -846,6 +865,7 @@ void Register_Donor()
 	char none1[] = { "None" };
 	char none2[] = { "none" };
 	char temp;
+	char tempGender;
 
 	cout << " Register Donor" << endl;
 	cout << "-------------------\n" << endl;
@@ -1101,16 +1121,18 @@ void Register_Donor()
 
 	// Gender ----------------------------------------------------------------------------------------
 	cout << "Gender (M/F/X - Other): ";
-	cin >> temp;
-	while (temp != 'M' && temp != 'F' && temp != 'X' && temp != 'm' && temp != 'f' && temp != 'x')
+	cin >> tempGender;
+
+	while (tempGender != 'M' && tempGender != 'F' && tempGender != 'X' && tempGender != 'm' && tempGender != 'f' && tempGender != 'x')
 	{
+		cin.ignore(100, '\n');
 		//system("CLS"); // clear screen
+
 		cout << "\nPlease try again" << endl;
 		cout << "Gender (M/F/X - Other): ";
-		cin >> temp;
+		cin >> tempGender;
 	}
-	donor.Gender = temp;
-	cin.ignore();
+	donor.Gender = tempGender;
 	// -----------------------------------------------------------------------------------------------
 
 
@@ -1424,7 +1446,7 @@ bool Donor_Login()
 	else {
 		//Buffer validation check.
 		cout << "\nLogin" << endl << endl;
-		cout << "Username : ";		
+		cout << "Username : ";
 		getline(cin, user);
 		while (user.length() > 20) {
 			cout << "\nPlease enter username less than 20 characters: ";
@@ -2407,6 +2429,7 @@ void update_donor_information() {
 		{
 		case 1:
 			char temp5;
+			bool tempValidationInput;
 
 			//when user wants to update donor info but hasnt made booking catch this.
 			if (strcmp(edit_donor.hasBooking, tab2) == 0) {
@@ -2416,31 +2439,106 @@ void update_donor_information() {
 
 			//if delete set statis to
 			//strcpy_s(edit_donor.hasBooking, "false");
-			cout << "\nFirst Name:";
+
+			// First name ---------------------------------------------------------------------------------
+			cout << "\nFirst Name : ";
 			getline(cin, sFname);
+			tempValidationInput = checkValidStringInput(sFname);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\nFirst Name : ";
+				getline(cin, sFname);
+
+				tempValidationInput = checkValidStringInput(sFname);
+			}
+
 			while (sFname.length() > Size)
 			{
-				cout << "\nPlease enter a first name less than " << Size << " characters: ";
+				cout << "\nPlease enter a first name less than " << Size << " characters : ";
 				getline(cin, sFname);
+
+				tempValidationInput = checkValidStringInput(sFname);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\nFirst Name : ";
+					getline(cin, sFname);
+
+					tempValidationInput = checkValidStringInput(sFname);
+				}
 			}
+
 			strcpy_s(edit_donor.FirstName, sFname.c_str());
-			cout << "\nMiddle Name:";
+
+			// --------------------------------------------------------------------------------------------
+
+
+			// Middle name --------------------------------------------------------------------------------
+			cout << "\nMiddle Name : ";
 			getline(cin, sMname);
+			tempValidationInput = checkValidStringInput(sMname);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\Middle Name : ";
+				getline(cin, sMname);
+
+				tempValidationInput = checkValidStringInput(sMname);
+			}
+
 			while (sMname.length() > Size)
 			{
-				cout << "\nPlease enter a middle name less than " << Size << " characters: ";
+				cout << "\nPlease enter a Middle name less than " << Size << " characters : ";
 				getline(cin, sMname);
+
+				tempValidationInput = checkValidStringInput(sMname);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\Middle Name : ";
+					getline(cin, sMname);
+
+					tempValidationInput = checkValidStringInput(sMname);
+				}
 			}
 			strcpy_s(edit_donor.MiddleName, sMname.c_str());
-			cout << "\nLast Name:";
+			// --------------------------------------------------------------------------------------------
+
+
+			// Last name ----------------------------------------------------------------------------------
+			cout << "\nLast Name : ";
 			getline(cin, sLname);
+			tempValidationInput = checkValidStringInput(sLname);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\Last Name : ";
+				getline(cin, sLname);
+
+				tempValidationInput = checkValidStringInput(sLname);
+			}
+
 			while (sLname.length() > Size)
 			{
-				cout << "\nPlease enter a last name less than " << Size << " characters: ";
+				cout << "\nPlease enter a Last name less than " << Size << " characters : ";
 				getline(cin, sLname);
+
+				tempValidationInput = checkValidStringInput(sLname);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\Last Name : ";
+					getline(cin, sLname);
+
+					tempValidationInput = checkValidStringInput(sLname);
+				}
 			}
 			strcpy_s(edit_donor.LastName, sLname.c_str());
+			// --------------------------------------------------------------------------------------------
 
+
+			// Date of Birth ------------------------------------------------------------------------------
 			cout << "\nDate of birth:";
 			getline(cin, sDob);
 			while (sDob.length() > Size)
@@ -2449,46 +2547,125 @@ void update_donor_information() {
 				getline(cin, sDob);
 			}
 			strcpy_s(edit_donor.DOB, sDob.c_str());
+			// --------------------------------------------------------------------------------------------
 
-			cout << "\nGender (M/F/X - Other): ";
+
+			// Gender -------------------------------------------------------------------------------------
+			// Updated to check if validated
+			cout << "Gender (M/F/X - Other): ";
 			cin >> temp5;
+
 			while (temp5 != 'M' && temp5 != 'F' && temp5 != 'X' && temp5 != 'm' && temp5 != 'f' && temp5 != 'x')
 			{
-				system("CLS"); // clear screen
+				cin.ignore(100, '\n');
+				//system("CLS"); // clear screen
+
 				cout << "\nPlease try again" << endl;
 				cout << "Gender (M/F/X - Other): ";
 				cin >> temp5;
 			}
 			edit_donor.Gender = temp5;
 			cin.ignore();
+			// --------------------------------------------------------------------------------------------
 
-			cout << "\nNationality:";
+
+			// Nationality --------------------------------------------------------------------------------
+			cout << "\nNationality : ";
 			getline(cin, sNationality);
+			tempValidationInput = checkValidStringInput(sNationality);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\Nationality : ";
+				getline(cin, sNationality);
+
+				tempValidationInput = checkValidStringInput(sNationality);
+			}
+
 			while (sNationality.length() > Size)
 			{
-				cout << "\nPlease enter a nationality less than " << Size << " characters: ";
+				cout << "\nPlease enter a nationality less than " << Size << " characters : ";
 				getline(cin, sNationality);
+
+				tempValidationInput = checkValidStringInput(sNationality);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\Nationality : ";
+					getline(cin, sNationality);
+
+					tempValidationInput = checkValidStringInput(sNationality);
+				}
 			}
 			strcpy_s(edit_donor.Nationalty, sNationality.c_str());
+			// --------------------------------------------------------------------------------------------
 
-			cout << "\nEthnicity:";
+
+			// Ethnicity ----------------------------------------------------------------------------------
+			cout << "\nEthnicity : ";
 			getline(cin, sEthnicity);
+			tempValidationInput = checkValidStringInput(sEthnicity);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\Ethnicity : ";
+				getline(cin, sEthnicity);
+
+				tempValidationInput = checkValidStringInput(sEthnicity);
+			}
+
 			while (sEthnicity.length() > Size)
 			{
-				cout << "\nPlease enter an ethnicity less than " << Size << " characters: ";
+				cout << "\nPlease enter a ethnicity less than " << Size << " characters : ";
 				getline(cin, sEthnicity);
+
+				tempValidationInput = checkValidStringInput(sEthnicity);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\Ethnicity : ";
+					getline(cin, sEthnicity);
+
+					tempValidationInput = checkValidStringInput(sEthnicity);
+				}
 			}
 			strcpy_s(edit_donor.Ethnicity, sEthnicity.c_str());
+			// --------------------------------------------------------------------------------------------
 
-			cout << "\nCity:";
+
+			// City ---------------------------------------------------------------------------------------
+			cout << "\nCity : ";
 			getline(cin, sCity);
-			while (sEthnicity.length() > Size)
+			tempValidationInput = checkValidStringInput(sCity);
+			while (tempValidationInput != true)
 			{
-				cout << "\nPlease enter a city less than " << Size << " characters: ";
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\City : ";
 				getline(cin, sCity);
+
+				tempValidationInput = checkValidStringInput(sCity);
+			}
+
+			while (sCity.length() > Size)
+			{
+				cout << "\nPlease enter a city less than " << Size << " characters : ";
+				getline(cin, sCity);
+
+				tempValidationInput = checkValidStringInput(sCity);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\City : ";
+					getline(cin, sCity);
+
+					tempValidationInput = checkValidStringInput(sCity);
+				}
 			}
 			strcpy_s(edit_donor.City, sCity.c_str());
+			// --------------------------------------------------------------------------------------------
 
+
+			// Address ------------------------------------------------------------------------------------
 			cout << "\nAddress:";
 			getline(cin, sAddress);
 			while (sEthnicity.length() > Size)
@@ -2497,16 +2674,42 @@ void update_donor_information() {
 				getline(cin, sAddress);
 			}
 			strcpy_s(edit_donor.Address, sAddress.c_str());
+			// --------------------------------------------------------------------------------------------
 
-			cout << "\nContact Number:";
+
+			// Contact Number -----------------------------------------------------------------------------
+			cout << "\nContact Number : ";
 			getline(cin, sContactNumber);
+			tempValidationInput = checkValidStringNumberInput(sContactNumber);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using numbers." << endl;
+				cout << "\Contact Number : ";
+				getline(cin, sContactNumber);
+
+				tempValidationInput = checkValidStringNumberInput(sContactNumber);
+			}
+
 			while (sContactNumber.length() > Size)
 			{
-				cout << "\nPlease enter a contact number less than " << Size << " characters: ";
+				cout << "\nPlease enter a contact number less than " << Size << " characters : ";
 				getline(cin, sContactNumber);
+
+				tempValidationInput = checkValidStringNumberInput(sContactNumber);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using numbers." << endl;
+					cout << "\Contact Number : ";
+					getline(cin, sContactNumber);
+
+					tempValidationInput = checkValidStringNumberInput(sContactNumber);
+				}
 			}
 			strcpy_s(edit_donor.ContactNumber, sContactNumber.c_str());
+			// --------------------------------------------------------------------------------------------
 
+
+			// Email --------------------------------------------------------------------------------------
 			cout << "\nEmail:";
 			getline(cin, sEmail);
 			while (sEmail.length() > Size)
@@ -2515,15 +2718,40 @@ void update_donor_information() {
 				getline(cin, sEmail);
 			}
 			strcpy_s(edit_donor.Email, sEmail.c_str());
+			// --------------------------------------------------------------------------------------------
 
-			cout << "\nHealth Conditions:";
+
+			// Conditions ---------------------------------------------------------------------------------
+			cout << "\nHealth Conditions : ";
 			getline(cin, sConditions);
+			tempValidationInput = checkValidStringInput(sConditions);
+			while (tempValidationInput != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\Health Conditions : ";
+				getline(cin, sConditions);
+
+				tempValidationInput = checkValidStringInput(sConditions);
+			}
+
 			while (sConditions.length() > Size)
 			{
-				cout << "\nPlease enter health conditions in less than " << Size << " characters: ";
+				cout << "\nPlease enter health conditions less than " << Size << " characters : ";
 				getline(cin, sConditions);
+
+				tempValidationInput = checkValidStringInput(sConditions);
+				while (tempValidationInput != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\Health Conditions : ";
+					getline(cin, sConditions);
+
+					tempValidationInput = checkValidStringInput(sConditions);
+				}
 			}
 			strcpy_s(edit_donor.Conditions, sConditions.c_str());
+			// --------------------------------------------------------------------------------------------
+
 
 			DonorFile.seekp(current_donor_position * sizeof(edit_donor), ios::beg);
 			DonorFile.write(reinterpret_cast<char*>(&edit_donor), sizeof(edit_donor));
@@ -3209,6 +3437,44 @@ bool checkValidNumbers(char arr[])
 	}
 	return true;
 }
+
+// Check string if only Alphabet letters are inside
+bool checkValidStringInput(string str)
+{
+	char tempStringArray[300];
+
+	strcpy_s(tempStringArray, str.c_str());
+
+	for (int i = 0; tempStringArray[i] != '\0'; i++)
+	{
+		if (!isalpha(tempStringArray[i]))
+		{
+			return false;
+		}
+	}
+
+	return true;
+
+}
+// Check string if only Numbers are inside
+bool checkValidStringNumberInput(string str)
+{
+	char tempStringArray[300];
+
+	strcpy_s(tempStringArray, str.c_str());
+
+	for (int i = 0; tempStringArray[i] != '\0'; i++)
+	{
+		if (!isdigit(tempStringArray[i]))
+		{
+			return false;
+		}
+	}
+
+	return true;
+
+}
+
 //Misc
 void inline printline(int size, char symbol) {
 	//Print a line based on the size and symbol as arguments.
