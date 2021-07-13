@@ -7,10 +7,6 @@ Type check with throw exception for switch case menus.
 Make sure code entered doesnt exceed buffers.
 */
 
-/*      NOTE
-      --------  
-	* Type checking for switch case (characters or integers)
-*/
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -139,6 +135,8 @@ bool checkValidStringInput(string str);
 
 // Check string if only Numbers are inside
 bool checkValidStringNumberInput(string str);
+
+bool validationSwitchCase(int choice);
 //-----------------------------------------------------
 
 // Main Menu
@@ -169,7 +167,7 @@ void display_Donor_for_Admin();
 void displayDonorReport();
 void searchDonorBloodGroupReport(char blood[]);
 void displayRecipientReport();
-void searchRecipientBloodGroupReport(char search[]);
+void searchRecipientBloodGroupReport(char blood[]);
 void searchDonorLocationReport(char search[]);
 void searchRecipientLocationReport(char search[]);
 void updateDonorReport(char uname[]);
@@ -191,6 +189,7 @@ void main_menu()
 	fstream DonorFile;
 	int choice;
 	bool check = true;
+	bool checkSwitchCase;
 	int donor_record_found = false;
 
 	cout << "Welcome to the Blood Bank Administration Program." << endl << endl;
@@ -207,9 +206,26 @@ void main_menu()
 		cout << "5. Login Admin" << endl;
 		cout << "6. Quit" << endl << endl;
 
-		cout << "Option : ";
+		cout << "Please enter option : ";
 
 		cin >> choice;
+
+		while (cin.fail())
+		{
+			cout << "\nPlease enter a valid option.." << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << endl;
+			cout << "1. Login Donor" << endl;
+			cout << "2. Login Recipient" << endl;
+			cout << "3. Register Donor" << endl;
+			cout << "4. Register Recipient" << endl;
+			cout << "5. Login Admin" << endl;
+			cout << "6. Quit" << endl << endl;
+
+			cout << "Please enter option : ";
+			cin >> choice;
+		}
 
 		cin.ignore();
 		cout << endl << endl;
@@ -287,7 +303,7 @@ void main_menu()
 		}
 		else
 		{
-			cout << "Wrong Input" << endl;
+			cout << "Please enter a valid option.." << endl;
 		}
 	}
 }
@@ -519,10 +535,10 @@ void Register_Recipient()
 		tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
 	}
 
-	tempArraySize = checkValidArraySize(recipient.Hospital_Name, Size);
+	tempArraySize = checkValidArraySize(recipient.Hospital_Name, 100);
 	while (tempArraySize != true)
 	{
-		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "\nPlease try again with only 100 characters limit." << endl;
 		cout << "Hospital : ";
 		cin >> recipient.Hospital_Name;
 		tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
@@ -535,7 +551,7 @@ void Register_Recipient()
 			tempAlphabetValid = checkValidInput(recipient.Hospital_Name);
 		}
 
-		tempArraySize = checkValidArraySize(recipient.Hospital_Name, Size);
+		tempArraySize = checkValidArraySize(recipient.Hospital_Name, 100);
 	}
 	// -----------------------------------------------------------------------------------------------
 
@@ -1065,10 +1081,10 @@ void Register_Donor()
 		tempAlphabetValid = checkValidInput(donor.Hospital_Name);
 	}
 
-	tempArraySize = checkValidArraySize(donor.Hospital_Name, Size);
+	tempArraySize = checkValidArraySize(donor.Hospital_Name, 100);
 	while (tempArraySize != true)
 	{
-		cout << "\nPlease try again with only 31 characters limit." << endl;
+		cout << "\nPlease try again with only 100 characters limit." << endl;
 		cout << "Hospital : ";
 		cin >> donor.Hospital_Name;
 		tempAlphabetValid = checkValidInput(donor.Hospital_Name);
@@ -1081,7 +1097,7 @@ void Register_Donor()
 			tempAlphabetValid = checkValidInput(donor.Hospital_Name);
 		}
 
-		tempArraySize = checkValidArraySize(donor.Hospital_Name, Size);
+		tempArraySize = checkValidArraySize(donor.Hospital_Name, 100);
 	}
 	// -----------------------------------------------------------------------------------------------
 
@@ -1599,6 +1615,7 @@ void displayRecipientFile(char tempUsername[])
 	if (!RecipientFile)
 	{
 		cout << "File not found";
+		return;
 	}
 	else
 	{
@@ -1642,6 +1659,7 @@ void displayBooking(char username[Size]) {
 	if (!bookingFile)
 	{
 		cout << "Donor File not found! ";
+		return;
 	}
 
 
@@ -1680,9 +1698,26 @@ void recipient_screen(char tempUsername[])
 		cout << "2. Search Donors Info by Blood group & Location" << endl;
 		cout << "3. Gather Donors contact details (By given Full Name)" << endl;
 		cout << "4. Your Blood details" << endl;
-		cout << "5. Back" << endl;
+		cout << "5. Back" << endl << endl;
 
+		cout << "Please enter option : ";
 		cin >> choice;
+
+		while (cin.fail())
+		{
+			cout << "\nPlease enter a valid option.." << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+
+			cout << "1. Search Donors Info by Blood group" << endl;
+			cout << "2. Search Donors Info by Blood group & Location" << endl;
+			cout << "3. Gather Donors contact details (By given Full Name)" << endl;
+			cout << "4. Your Blood details" << endl;
+			cout << "5. Back" << endl << endl;
+
+			cout << "Please enter option : ";
+			cin >> choice;
+		}
 		cout << endl;
 
 		switch (choice)
@@ -1748,6 +1783,8 @@ void recipient_screen(char tempUsername[])
 			char AB_neg[] = { "AB-" };
 			char inputBlood[100];
 			char location[100];
+			bool tempAlphabetValid;
+			bool tempArraySize;
 
 			cout << "Here are all the Blood group options (or type 'back' to go back to the menu)" << endl;
 			cout << "[A+] [A-]" << endl;
@@ -1758,7 +1795,7 @@ void recipient_screen(char tempUsername[])
 			cin.ignore();
 
 			cout << "Blood Group : ";
-			cin.getline(inputBlood, 100);
+			cin >> inputBlood;
 			cout << endl;
 
 			while ((strcmp(A_pos, inputBlood) != 0) && (strcmp(A_neg, inputBlood) != 0) &&
@@ -1774,18 +1811,51 @@ void recipient_screen(char tempUsername[])
 				cout << "[AB+] [AB-]" << endl << endl;
 
 				cout << "Blood Group : ";
-				cin.getline(inputBlood, 100);
+				cin >> inputBlood;
 				cout << endl;
 			}
 
 			cout << "Please enter the hospital name : ";
-			cin.getline(location, 100);
+			cin >> location;
+
+			// -------------------------------------------------------------------------
+			tempAlphabetValid = checkValidInput(location);
+			while (tempAlphabetValid != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "Hospital Name : ";
+				cin >> location;
+				tempAlphabetValid = checkValidInput(location);
+			}
+
+			tempArraySize = checkValidArraySize(location, 100);
+			while (tempArraySize != true)
+			{
+				cout << "\nPlease try again with only 100 characters limit." << endl;
+				cout << "Hospital : ";
+				cin >> location;
+				tempAlphabetValid = checkValidInput(location);
+
+				while (tempAlphabetValid != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "Hospital : ";
+					cin >> location;
+					tempAlphabetValid = checkValidInput(location);
+				}
+
+				tempArraySize = checkValidArraySize(location, 100);
+			}
 			cout << endl;
+			// -------------------------------------------------------------------------
+
+
 
 			searchDonorInfo_BloodGroup_Location(inputBlood, location);
 
 			cout << "Press any key to conintue ...";
 			cin.get();
+			cin.ignore();
 			cout << endl;
 			break;
 		}
@@ -1810,6 +1880,7 @@ void recipient_screen(char tempUsername[])
 		}
 		default:
 		{
+			cout << "Please enter a valid option.." << endl;
 			break;
 		}
 		}
@@ -1819,13 +1890,14 @@ void searchDonorInfo_BloodGroup(char search[])
 {
 	fstream DonorFile;
 	Registration_Donor donor;
-	int i = 1;
+	int i = 0;
 
 	DonorFile.open("donor.dat", ios::in | ios::out | ios::binary);
 
 	if (!DonorFile)
 	{
 		cout << "File not found!";
+		return;
 	}
 	else
 	{
@@ -1866,41 +1938,38 @@ void searchDonorInfo_BloodGroup_Location(char blood[], char location[])
 {
 	fstream DonorFile;
 	Registration_Donor donor;
-	int i = 1;
+	int i = 0;
 
-	DonorFile.open("donor.dat", ios::in | ios::out | ios::binary);
+	DonorFile.open("donor.dat", ios::in | ios::binary);
 
 	if (!DonorFile)
 	{
 		cout << "File not found!";
+		return;
 	}
 	else
 	{
 		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
 		while (!DonorFile.eof())
 		{
-			if (location != donor.Hospital_Name)
+			if ((strcmp(location, donor.Hospital_Name) == 0) && (strcmp(blood, donor.BloodGroup) == 0))
 			{
-				cout << "Location not found!...\n" << endl;
-				return;
+				cout << "Donor Form [" << i << "] " << endl;
+				cout << "----------------" << endl;
+				cout << "Name : " << donor.FirstName << " " << donor.LastName << endl;
+				cout << "Gender : " << donor.Gender << endl;
+				cout << "Hospital : [" << donor.Hospital_Name << "]" << endl;
+				cout << "Blood Group : [" << donor.BloodGroup << "]" << endl;
+				cout << "-----------------------------------------------------------------------------------------------------------" << endl;
+				cout << "Conditions : " << donor.Conditions << endl;
+				cout << "-----------------------------------------------------------------------------------------------------------" << endl << endl;
+
+				i++;
 			}
 			else
 			{
-				if (strcmp(blood, donor.BloodGroup) == 0 && strcmp(location, donor.Hospital_Name) == 0)
-				{
-					cout << "Donor Form [" << i << "] " << endl;
-					cout << "----------------" << endl;
-					cout << "Name : " << donor.FirstName << " " << donor.LastName << endl;
-					cout << "Gender : " << donor.Gender << endl;
-					cout << "Hospital : [" << donor.Hospital_Name << "]" << endl;
-					cout << "Blood Group : [" << donor.BloodGroup << "]" << endl;
-					cout << "-----------------------------------------------------------------------------------------------------------" << endl;
-					cout << "Conditions : " << donor.Conditions << endl;
-					cout << "-----------------------------------------------------------------------------------------------------------" << endl << endl;
-
-					i++;
-
-				}
+				cout << "Location not found!...\n" << endl;
+				return;
 			}
 			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
 		}
@@ -1912,30 +1981,93 @@ void getDonorContacts()
 {
 	fstream DonorFile;
 	Registration_Donor donor;
-	bool found_user = false;
 
+	bool found_user = false;
+	bool checkValidLetter;
+	bool checkValidSize;
 	char firstName[Size];
 	char lastName[Size];
-
-	cin.ignore();
-
-
 
 	DonorFile.open("donor.dat", ios::in | ios::binary);
 
 	if (!DonorFile)
 	{
 		cout << "File not found!";
+		return;
 	}
 	else
 	{
+		// First Name Check --------------------------------------------
 		cout << "Enter Donors First name : ";
-		cin.getline(firstName, Size);
+		cin >> firstName;
+
+		checkValidLetter = checkValidInput(firstName);
+		while (checkValidLetter != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Enter Donors First name : ";
+			cin >> firstName;
+
+			checkValidLetter = checkValidInput(firstName);
+		}
+
+		checkValidSize = checkValidArraySize(firstName, Size);
+		while (checkValidSize != true)
+		{
+			cout << "\nPlease try again with only 31 characters limit." << endl;
+			cout << "Enter Donors First name : ";
+			cin >> firstName;
+
+			checkValidLetter = checkValidInput(firstName);
+			while (checkValidLetter != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "Enter Donors First name : ";
+				cin >> firstName;
+
+				checkValidLetter = checkValidInput(firstName);
+			}
+			checkValidSize = checkValidArraySize(firstName, Size);
+		}
+		// -------------------------------------------------------------
+
 		cout << endl;
 
+		// Last Name Check ---------------------------------------------
 		cout << "Enter Donors Last name : ";
-		cin.getline(lastName, Size);
+		cin >> lastName;
+		checkValidLetter = checkValidInput(lastName);
+		while (checkValidLetter != true)
+		{
+			cout << "\nPlease try again with using alphabet characters." << endl;
+			cout << "Enter Donors Last name : ";
+			cin >> lastName;
+
+			checkValidLetter = checkValidInput(lastName);
+		}
+
+		checkValidSize = checkValidArraySize(lastName, Size);
+		while (checkValidSize != true)
+		{
+			cout << "\nPlease try again with only 31 characters limit." << endl;
+			cout << "Enter Donors Last name : ";
+			cin >> lastName;
+
+			checkValidLetter = checkValidInput(lastName);
+			while (checkValidLetter != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "Enter Donors Last name : ";
+				cin >> lastName;
+
+				checkValidLetter = checkValidInput(lastName);
+			}
+			checkValidSize = checkValidArraySize(lastName, Size);
+		}
+		// -------------------------------------------------------------
+
 		cout << endl;
+
 		DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
 
 		while (!DonorFile.eof())
@@ -1962,9 +2094,6 @@ void getDonorContacts()
 }
 bool getValidation(char validation)
 {
-	//fstream RecipientFile;
-	Registration_Recipient recipient;
-
 	if (validation == 'y')
 	{
 		return true;
@@ -1973,18 +2102,6 @@ bool getValidation(char validation)
 	{
 		return false;
 	}
-
-	//RecipientFile.open("recipient.dat", ios::in | ios::binary);
-
-	//if (!RecipientFile)
-	//{
-	//	cout << "File not found!" << endl;
-	//}
-	//else
-	//{
-		 // Code here....
-	//}
-
 }
 void checkVal(Registration_Recipient recipient)
 {
@@ -2008,9 +2125,28 @@ void donor_screen() {
 		cout << "\n2. Create a Booking";
 		cout << "\n3. Benefits of blood donation";
 		cout << "\n4. Manage donor / booking information";
-		cout << "\n5. Back\n";
+		cout << "\n5. Back\n" << endl;
+
 		cout << "Please enter option : ";
 		cin >> donor_menu_input;
+
+		while (cin.fail())
+		{
+			cout << "\nPlease enter a valid option.." << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+
+			cout << "\nDonor Menu : \n";
+			cout << "\n1. Procedure to donate blood";
+			cout << "\n2. Create a Booking";
+			cout << "\n3. Benefits of blood donation";
+			cout << "\n4. Manage donor / booking information";
+			cout << "\n5. Back\n" << endl;
+
+			cout << "Please enter option : ";
+			cin >> donor_menu_input;
+		}
+
 		switch (donor_menu_input)
 		{
 		case 1:
@@ -2120,6 +2256,7 @@ void create_booking() {
 	if (!DonorFile)
 	{
 		cout << "Donor File not found! ";
+		return;
 	}
 
 	DonorFile.seekg(current_donor_position * sizeof(donor_for_booking), ios::beg);
@@ -2333,6 +2470,7 @@ void updateDonorBookingStatus(string value)
 	if (!DonorFile)
 	{
 		cout << "Donor File not found! ";
+		return;
 	}
 
 	DonorFile.seekg(current_donor_position * sizeof(donor3), ios::beg);
@@ -2357,6 +2495,7 @@ void deleteBooking(string uname) {
 	if (!booking)
 	{
 		cout << "Error in opening the file . ";
+		return;
 	}
 	else {
 		booking.read(reinterpret_cast<char*>(&deleteBooking), sizeof(deleteBooking));
@@ -2411,6 +2550,7 @@ void update_donor_information() {
 	if (!DonorFile)
 	{
 		cout << "Donor File not found! ";
+		return;
 	}
 
 	int edit_donor_choice;
@@ -2418,9 +2558,25 @@ void update_donor_information() {
 	while (1) {
 		cout << "\nManage donor information / Booking menu : \n";
 		cout << "\n1. Update contact details and booking (If it exists.): ";
-		cout << "\n2. Back\n";
+		cout << "\n2. Back\n" << endl;
 		cout << "Please enter option : ";
 		cin >> edit_donor_choice;
+
+		while (cin.fail())
+		{
+			cout << "\nPlease enter a valid option.." << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << endl;
+			// --------------------------------
+			// Menu Here....
+			cout << "\n1. Update contact details and booking (If it exists.): ";
+			cout << "\n2. Back\n" << endl;
+			// --------------------------------
+
+			cout << "Please enter option : ";
+			cin >> edit_donor_choice;
+		}
 		DonorFile.seekg(current_donor_position * sizeof(edit_donor), ios::beg);
 		DonorFile.read(reinterpret_cast<char*>(&edit_donor), sizeof(edit_donor));
 
@@ -2783,7 +2939,7 @@ void update_donor_information() {
 void admin_screen()
 {
 	bool flag = true;
-	char choice;
+	int choice;
 
 	while (flag != false)
 	{
@@ -2795,25 +2951,45 @@ void admin_screen()
 		cout << "6. Update Specific Donor Record" << endl;
 		cout << "7. back\n" << endl;
 
-		cout << "Selection : ";
+		cout << "Please enter option : ";
 		cin >> choice;
+		while (cin.fail())
+		{
+			cout << "\nPlease enter a valid option.." << endl;
+			cin.clear();
+			cin.ignore(256, '\n');
+			cout << endl;
+			// --------------------------------
+			// Menu Here....
+			cout << "1. View Recipient Information" << endl;
+			cout << "2. View Donor Information" << endl;
+			cout << "3. Weekly Report (Donor and Recipient)" << endl;
+			cout << "4. Report by Blood Group" << endl;
+			cout << "5. Report by Location" << endl;
+			cout << "6. Update Specific Donor Record" << endl;
+			cout << "7. back\n" << endl;
+			// --------------------------------
+
+			cout << "Please enter option : ";
+			cin >> choice;
+		}
 		cout << endl;
 
 		switch (choice)
 		{
-		case '1':
+		case 1:
 		{
 			// View Recipient Information
 			display_Recipient_for_Admin();
 			break;
 		}
-		case '2':
+		case 2:
 		{
 			// View Donor Information
 			display_Donor_for_Admin();
 			break;
 		}
-		case '3':
+		case 3:
 		{
 			// Donor Report
 			displayDonorReport();
@@ -2821,7 +2997,7 @@ void admin_screen()
 			displayRecipientReport();
 			break;
 		}
-		case '4':
+		case 4:
 		{
 			//Donor Report by Blood Group
 			// Report by Blood Group
@@ -2865,42 +3041,68 @@ void admin_screen()
 			searchDonorBloodGroupReport(inputBlood);
 			searchRecipientBloodGroupReport(inputBlood);
 
+			
+
 			//Recipient Report by Blood Group
 			break;
 		}
-		case '5':
+		case 5:
 		{
 			//Donor Report by Location
 			//Recipient Report by Location
 			string sLocation;
 			char inputHospital[100];
-			cout << "\nInput Hospital name:";
+			bool tempAlphabetValid;
+
+			cout << "\nInput Hospital name : ";
 			cin.ignore();
 			getline(cin, sLocation);
-			while (sLocation.length() > 100) {
-				cout << "\nPlease enter a Hospital name less than 100 characters: ";
+
+			tempAlphabetValid = checkValidStringInput(sLocation);
+			while (tempAlphabetValid != true)
+			{
+				cout << "\nPlease try again with using alphabet characters." << endl;
+				cout << "\nInput Hospital name : ";
 				getline(cin, sLocation);
+				tempAlphabetValid = checkValidStringInput(sLocation);
+			}
+
+			while (sLocation.length() > 100)
+			{
+				cout << "\nPlease enter a Hospital name less than 100 characters." << endl;
+				cout << "\nInput Hospital name : ";
+				getline(cin, sLocation);
+				tempAlphabetValid = checkValidStringInput(sLocation);
+
+				while (tempAlphabetValid != true)
+				{
+					cout << "\nPlease try again with using alphabet characters." << endl;
+					cout << "\nInput Hospital name : ";
+					getline(cin, sLocation);
+					tempAlphabetValid = checkValidStringInput(sLocation);
+				}
 			}
 			strcpy_s(inputHospital, sLocation.c_str());
+
 			searchDonorLocationReport(inputHospital);
 			searchRecipientLocationReport(inputHospital);
 			break;
 		}
-		case '6':
+		case 6:
 			char inputUserName[20];
 			cout << "\nInput the user name of the donor's record / booking you wish to edit: ";
 			cin.ignore();
 			cin.getline(inputUserName, 20);
 			updateDonorReport(inputUserName);
 			break;
-		case '7':
+		case 7:
 		{
 			// Go back
 			return;
 			flag = false;
 		}
 		default:
-			cout << "\nWrong Input" << endl;
+			cout << "\nPlease enter a valid option.." << endl;
 			break;
 		}
 	}
@@ -2951,6 +3153,10 @@ void display_Recipient_for_Admin()
 				cin >> input;
 			}
 
+			if (input == 'n')
+			{
+				break;
+			}
 			cout << endl;
 
 			RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
@@ -3008,6 +3214,10 @@ void display_Donor_for_Admin()
 				cin >> input;
 			}
 
+			if (input == 'n')
+			{
+				break;
+			}
 			cout << endl;
 
 			DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
@@ -3084,6 +3294,7 @@ void displayDonorReport() {
 	if (!DonorFile)
 	{
 		cout << "File not found";
+		return;
 	}
 
 	DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
@@ -3187,7 +3398,7 @@ void searchDonorBloodGroupReport(char blood[]) {
 	cout << endl << endl;
 	DonorFile.close();
 }
-void searchRecipientBloodGroupReport(char search[]) {
+void searchRecipientBloodGroupReport(char blood[]) {
 	fstream RecipientFile;
 	Registration_Recipient recipient;
 	int i = 1;
@@ -3207,7 +3418,7 @@ void searchRecipientBloodGroupReport(char search[]) {
 
 		while (!RecipientFile.eof())
 		{
-			if (strcmp(search, recipient.BloodGroup) == 0)
+			if (strcmp(blood, recipient.BloodGroup) == 0)
 			{
 				cout << "\n\n\t" << recipient.FirstName << " " << recipient.MiddleName << " " << recipient.LastName << endl;
 				printline(40, '*');
@@ -3236,7 +3447,6 @@ void searchRecipientBloodGroupReport(char search[]) {
 				RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
 			}
 		}
-
 	}
 
 	RecipientFile.close();
@@ -3389,6 +3599,8 @@ void updateDonorReport(char uname[]) {
 	update_donor_information();
 }
 
+//      Validation Functions
+//-----------------------------------
 //Check array Size isnt above array limit.
 bool checkValidArraySize(char arr[], int setSize)
 {
@@ -3407,7 +3619,6 @@ bool checkValidArraySize(char arr[], int setSize)
 		return false;
 	}
 }
-
 
 //Check array if only Alphabet letters are inside.
 bool checkValidInput(char arr[])
@@ -3456,6 +3667,7 @@ bool checkValidStringInput(string str)
 	return true;
 
 }
+
 // Check string if only Numbers are inside
 bool checkValidStringNumberInput(string str)
 {
@@ -3474,6 +3686,7 @@ bool checkValidStringNumberInput(string str)
 	return true;
 
 }
+//-----------------------------------
 
 //Misc
 void inline printline(int size, char symbol) {
