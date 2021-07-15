@@ -105,13 +105,13 @@ struct donorBooking {
 };
 
 // Register Functions
-void Register_Recipient();
-void Register_Donor();
+void RegisterRecipient();
+void RegisterDonor();
 
 // Login Functions
-bool Donor_Login();
-bool Recipient_Login(char tempUsername[]);
-bool Admin_Login();
+bool DonorLogin();
+bool RecipientLogin(char tempUsername[]);
+bool AdminLogin();
 
 // Display Function
 void displayRecipientFile(char tempUsername[]);
@@ -140,30 +140,30 @@ bool validationSwitchCase(int choice);
 //-----------------------------------------------------
 
 // Main Menu
-void main_menu();
+void mainmenu();
 
 // Donor Functions
-void donor_screen();
-inline void procedure_to_donate();
-inline void donation_benefits();
-void update_donor_information();
-void create_booking();
+void donorScreen();
+inline void procedureToDonate();
+inline void donationBenefits();
+void updateDonorInformation();
+void createBooking();
 void displayBooking(char uname[Size]);
 void updateDonorBookingStatus(string value);
 void deleteBooking(string uname);
 
 // Recipient Functions
-void recipient_screen(char tempUsername[]);
-void searchDonorInfo_BloodGroup(char search[]);
-void searchDonorInfo_BloodGroup_Location(char blood[], char location[]);
+void recipientScreen(char tempUsername[]);
+void searchDonorInfoBloodGroup(char search[]);
+void searchDonorInfoBloodGroupLocation(char blood[], char location[]);
 void getDonorContacts();
 bool getValidation(char validation);
 void checkVal(Registration_Recipient recipient);
 
 // Admin Functions
-void admin_screen();
-void display_Recipient_for_Admin();
-void display_Donor_for_Admin();
+void adminScreen();
+void displayRecipientForAdmin();
+void displayDonorForAdmin();
 void displayDonorReport();
 void searchDonorBloodGroupReport(char blood[]);
 void displayRecipientReport();
@@ -179,11 +179,11 @@ streamsize current_donor_position = 0;
 int main()
 {
 	srand(time(NULL));
-	main_menu();
+	mainmenu();
 
 	return 0;
 }
-void main_menu()
+void mainmenu()
 {
 	fstream RecipientFile;
 	fstream DonorFile;
@@ -240,11 +240,11 @@ void main_menu()
 
 			while (account_found == false && attempts < 3)
 			{
-				account_found = Donor_Login();
+				account_found = DonorLogin();
 				attempts++;
 			}
 			if (account_found) {
-				donor_screen();
+				donorScreen();
 			}
 			cout << endl;
 		}
@@ -258,22 +258,22 @@ void main_menu()
 			while (account_found2 == false && attempts2 < 3)
 			{
 
-				account_found2 = Recipient_Login(tempUsername);
+				account_found2 = RecipientLogin(tempUsername);
 				attempts2++;
 			}
 			if (account_found2) {
-				recipient_screen(tempUsername);
+				recipientScreen(tempUsername);
 			}
 			cout << endl;
 		}
 		else if (choice == 3)
 		{
-			Register_Donor();
+			RegisterDonor();
 			cout << endl << endl;
 		}
 		else if (choice == 4)
 		{
-			Register_Recipient();
+			RegisterRecipient();
 			cout << endl << endl;
 		}
 		else if (choice == 5)
@@ -285,12 +285,12 @@ void main_menu()
 
 			while (account_found3 == false && attempts3 < 3)
 			{
-				account_found3 = Admin_Login();
+				account_found3 = AdminLogin();
 				attempts3++;
 			}
 			if (account_found3)
 			{
-				admin_screen();
+				adminScreen();
 				cout << endl << endl;
 			}
 			cout << endl << endl;
@@ -309,7 +309,7 @@ void main_menu()
 }
 
 //Register Functions.
-void Register_Recipient()
+void RegisterRecipient()
 {
 	fstream RecipientFile;
 	Registration_Recipient recipient;
@@ -854,7 +854,7 @@ void Register_Recipient()
 
 	RecipientFile.close();
 }
-void Register_Donor()
+void RegisterDonor()
 {
 	fstream DonorFile;
 	Registration_Donor donor;
@@ -1381,7 +1381,7 @@ void Register_Donor()
 }
 
 //Login Functions.
-bool Recipient_Login(char tempUsername[])
+bool RecipientLogin(char tempUsername[])
 {
 	fstream RecipientFile;
 	Registration_Recipient recipient;
@@ -1442,7 +1442,7 @@ bool Recipient_Login(char tempUsername[])
 	RecipientFile.close();
 	return found_flag;
 }
-bool Donor_Login()
+bool DonorLogin()
 {
 
 	fstream DonorFile;
@@ -1500,7 +1500,7 @@ bool Donor_Login()
 	DonorFile.close();
 	return found_flag;
 }
-bool Admin_Login()
+bool AdminLogin()
 {
 	Admin admin;
 
@@ -1684,7 +1684,7 @@ void displayBooking(char username[Size]) {
 }
 
 //Recipient Functions.
-void recipient_screen(char tempUsername[])
+void recipientScreen(char tempUsername[])
 {
 	bool flag = true;
 
@@ -1763,7 +1763,7 @@ void recipient_screen(char tempUsername[])
 				cout << endl;
 			}
 
-			searchDonorInfo_BloodGroup(inputBlood);
+			searchDonorInfoBloodGroup(inputBlood);
 
 			cout << "Press any key to conintue ...";
 			cin.get();
@@ -1851,7 +1851,7 @@ void recipient_screen(char tempUsername[])
 
 
 
-			searchDonorInfo_BloodGroup_Location(inputBlood, location);
+			searchDonorInfoBloodGroupLocation(inputBlood, location);
 
 			cout << "Press any key to conintue ...";
 			cin.get();
@@ -1886,7 +1886,7 @@ void recipient_screen(char tempUsername[])
 		}
 	}
 }
-void searchDonorInfo_BloodGroup(char search[])
+void searchDonorInfoBloodGroup(char search[])
 {
 	fstream DonorFile;
 	Registration_Donor donor;
@@ -1934,7 +1934,7 @@ void searchDonorInfo_BloodGroup(char search[])
 
 	DonorFile.close();
 }
-void searchDonorInfo_BloodGroup_Location(char blood[], char location[])
+void searchDonorInfoBloodGroupLocation(char blood[], char location[])
 {
 	fstream DonorFile;
 	Registration_Donor donor;
@@ -2116,7 +2116,7 @@ void checkVal(Registration_Recipient recipient)
 }
 
 //Donor Functions.
-void donor_screen() {
+void donorScreen() {
 	int donor_menu_input;
 
 	while (1) {
@@ -2150,19 +2150,19 @@ void donor_screen() {
 		switch (donor_menu_input)
 		{
 		case 1:
-			procedure_to_donate();
+			procedureToDonate();
 			break;
 		case 2:
 			cin.ignore();
-			create_booking();
+			createBooking();
 			break;
 		case 3:
 			//Benefits of blood donation 
-			donation_benefits();
+			donationBenefits();
 			break;
 		case 4:
 			//Update the donor information.
-			update_donor_information();
+			updateDonorInformation();
 			//Also edit booking informations. / switch case menu for both options.
 			break;
 		case 5:
@@ -2173,7 +2173,7 @@ void donor_screen() {
 		}
 	}
 }
-inline void procedure_to_donate() {
+inline void procedureToDonate() {
 	cout << "\nProcedure to donate blood:\n\n";
 	cout << "\t1. Check with your G.P to make sure you are eligible as a donor\n";
 	cout << "\t2. Register as a donor with this system.\n";
@@ -2220,7 +2220,7 @@ inline void procedure_to_donate() {
 	cout << "\t    ready, you will be invited to have refreshments in the recovery area. We like to keep an eye on\n";
 	cout << "\t    you for another 10-15 minutes to make sure that you feel OK before leaving.\n";
 }
-inline void donation_benefits() {
+inline void donationBenefits() {
 	cout << "\nBenefits of donating Blood: \n";
 	cout << "\n\tThe gift of blood can only be given from one person to another, and there is no substitute. \n";
 	cout << "\tRegular weekly donations ensure blood and plasma are available for those in need.\n";
@@ -2238,7 +2238,7 @@ inline void donation_benefits() {
 	cout << "\t7.Whether you choose to give blood, plasma or platelets, your donation will save and \n";
 	cout << "\timprove the lives of people across New Zealand.\n";
 }
-void create_booking() {
+void createBooking() {
 	donorBooking currentBooking;
 	string donor_start_date, donor_end_date;
 	int test_end_date;
@@ -2532,7 +2532,7 @@ void deleteBooking(string uname) {
 
 	updateDonorBookingStatus("false");
 }
-void update_donor_information() {
+void updateDonorInformation() {
 	//Dynamically update the donor's booking with new data.
 	string sFname, sMname, sLname, sDob, sNationality, sEthnicity, sCity, sAddress, sContactNumber, sEmail, sConditions;
 	fstream DonorFile;
@@ -2915,7 +2915,7 @@ void update_donor_information() {
 			if (strcmp(edit_donor.hasBooking, tab3) == 0)
 			{
 				//If no booking is existing for donor 
-				create_booking();
+				createBooking();
 			}
 
 			break;
@@ -2936,7 +2936,7 @@ void update_donor_information() {
 }
 
 //Admin Functions.
-void admin_screen()
+void adminScreen()
 {
 	bool flag = true;
 	int choice;
@@ -2980,13 +2980,13 @@ void admin_screen()
 		case 1:
 		{
 			// View Recipient Information
-			display_Recipient_for_Admin();
+			displayRecipientForAdmin();
 			break;
 		}
 		case 2:
 		{
 			// View Donor Information
-			display_Donor_for_Admin();
+			displayDonorForAdmin();
 			break;
 		}
 		case 3:
@@ -3107,7 +3107,7 @@ void admin_screen()
 		}
 	}
 }
-void display_Recipient_for_Admin()
+void displayRecipientForAdmin()
 {
 	fstream RecipientFile;
 	Registration_Recipient recipient;
@@ -3169,7 +3169,7 @@ void display_Recipient_for_Admin()
 	}
 	RecipientFile.close();
 }
-void display_Donor_for_Admin()
+void displayDonorForAdmin()
 {
 	fstream DonorFile;
 	Registration_Donor donor;
@@ -3596,7 +3596,7 @@ void updateDonorReport(char uname[]) {
 	DonorFile.close();
 
 	//Run the update update_donor_information
-	update_donor_information();
+	updateDonorInformation();
 }
 
 //      Validation Functions
