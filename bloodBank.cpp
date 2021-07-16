@@ -775,7 +775,7 @@ void RegisterRecipient()
 		cout << "Username : ";
 		cin >> tempusername;
 
-		while (check != false)
+		while (check != true
 		{
 			for (i = 0; tempusername[i]; i++)
 			{
