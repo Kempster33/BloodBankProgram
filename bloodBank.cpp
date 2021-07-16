@@ -21,7 +21,6 @@ Make sure code entered doesnt exceed buffers.
 #include <algorithm>
 using namespace std;
 
-//system("CLS"); - to remove 
 const int Size = 31;
 
 struct Registration_Recipient
@@ -176,6 +175,7 @@ void updateDonorReport(char uname[]);
 void inline printline(int size, char symbol);
 
 streamsize current_donor_position = 0;
+
 int main()
 {
 	srand(time(NULL));
@@ -183,6 +183,7 @@ int main()
 
 	return 0;
 }
+
 void mainmenu()
 {
 	fstream RecipientFile;
@@ -733,6 +734,7 @@ void RegisterRecipient()
 	bool check = false;
 	int i;
 	char tempusername[20];
+	string fileName = "recipient.dat";
 
 	cout << "\n20 Characters Maximum" << endl;
 	cout << "Username : ";
@@ -759,9 +761,9 @@ void RegisterRecipient()
 	}
 
 
-	tempBoolUsername = checkUsername("recipient.dat", tempusername);
+	tempBoolUsername = checkUsername(fileName, tempusername);
 
-	while (tempBoolUsername == true)
+	while (tempBoolUsername != true)
 	{
 
 		bool check = false;
@@ -792,7 +794,7 @@ void RegisterRecipient()
 			}
 		}
 
-		tempBoolUsername = checkUsername("recipient.dat", tempusername);
+		tempBoolUsername = checkUsername(fileName, tempusername);
 	}
 
 	check = false;
@@ -1279,6 +1281,7 @@ void RegisterDonor()
 	bool check = false;
 	int i;
 	char tempusername[20];
+	string fileName = "donor.dat";
 
 	cout << "\n20 Characters Maximum" << endl;
 	cout << "Username : ";
@@ -1305,9 +1308,9 @@ void RegisterDonor()
 	}
 
 
-	tempBoolUsername = checkUsername("donor.dat", tempusername);
+	tempBoolUsername = checkUsername(fileName, tempusername);
 
-	while (tempBoolUsername == true)
+	while (tempBoolUsername != true)
 	{
 
 		bool check = false;
@@ -1338,7 +1341,7 @@ void RegisterDonor()
 			}
 		}
 
-		tempBoolUsername = checkUsername("donor.dat", tempusername);
+		tempBoolUsername = checkUsername(fileName, tempusername);
 	}
 
 	check = false;
@@ -1574,7 +1577,7 @@ bool checkUsername(string fileName, char username[])
 
 		if (!DonorFile)
 		{
-
+			return false;
 		}
 		else
 		{
