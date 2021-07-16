@@ -193,7 +193,15 @@ void mainmenu()
 	bool checkSwitchCase;
 	int donor_record_found = false;
 
-	cout << "Welcome to the Blood Bank Administration Program." << endl << endl;
+
+	cout << "Welcome to the New Zealand Blood Bank Administration Program." << endl;
+	cout << "\nRegular weekly donations ensure blood and plasma are available for those in need.\n";
+	cout << "The gift of blood can only be given from one person to another, and there is no substitute.\n";
+	cout << "So it's nice to know New Zealand can rely on everyday heroes.\n";
+	cout << "generosity to keep the flow of blood and plasma going.\n";
+	cout << "However, the need for bloodand plasma is constant, so we're looking for more lifesavers.\n";
+	cout << "By putting aside a small part of your day you can make a life-changing\n";
+	cout << "difference, you can become a lifesaver too! \n\n";
 
 	cout << "Main Menu:" << endl;
 
@@ -3042,7 +3050,7 @@ void adminScreen()
 			searchDonorBloodGroupReport(inputBlood);
 			searchRecipientBloodGroupReport(inputBlood);
 
-			
+
 
 			//Recipient Report by Blood Group
 			break;
