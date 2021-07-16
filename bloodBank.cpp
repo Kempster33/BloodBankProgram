@@ -763,7 +763,7 @@ void RegisterRecipient()
 
 	tempBoolUsername = checkUsername(fileName, tempusername);
 
-	while (tempBoolUsername != true)
+	while (tempBoolUsername != false)
 	{
 
 		bool check = false;
@@ -1280,7 +1280,7 @@ void RegisterDonor()
 	bool tempBoolUsername;
 	bool check = false;
 	int i;
-	char tempusername[20];
+	char tempusername[30];
 	string fileName = "donor.dat";
 
 	cout << "\n20 Characters Maximum" << endl;
@@ -1310,7 +1310,7 @@ void RegisterDonor()
 
 	tempBoolUsername = checkUsername(fileName, tempusername);
 
-	while (tempBoolUsername != true)
+	while (tempBoolUsername != false)
 	{
 
 		bool check = false;
@@ -1322,7 +1322,7 @@ void RegisterDonor()
 		cout << "Username : ";
 		cin >> tempusername;
 
-		while (check != false)
+		while (check != true)
 		{
 			for (i = 0; tempusername[i]; i++)
 			{
@@ -1333,6 +1333,7 @@ void RegisterDonor()
 				cout << "Only 20 Maximum characters" << endl;
 				cout << "Username : ";
 				cin >> tempusername;
+				check = false;
 			}
 			else if (i < 20)
 			{
@@ -1560,18 +1561,17 @@ bool checkUsername(string fileName, char username[])
 				{
 					return true;
 				}
-				else
-				{
-					return false;
-				}
 
 				RecipientFile.read(reinterpret_cast<char*>(&recipient), sizeof(recipient));
 			}
+
 		}
 
 		RecipientFile.close();
+
+		return false;
 	}
-	else if (fileName == "donor.dat")
+	else
 	{
 		DonorFile.open("donor.dat", ios::in | ios::binary);
 
@@ -1589,20 +1589,18 @@ bool checkUsername(string fileName, char username[])
 				{
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+
 				DonorFile.read(reinterpret_cast<char*>(&donor), sizeof(donor));
 			}
+
 		}
 
 		DonorFile.close();
-	}
-	else
-	{
+
 		return false;
 	}
+
+	return false;
 
 }
 
